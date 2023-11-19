@@ -13,6 +13,15 @@
         <module>api-gateway</module>
         <module>config-server</module>
         <module>service-discovery</module>
+        <module>auth</module>
+        <module>data</module>
+        <module>gen</module>
+        <module>charr</module>
+        <module>eq</module>
+        <module>cal</module>
+        <module>wth</module>
+        <module>cp</module>
+        <module>mp</module>
     </modules>
 
     <properties>
