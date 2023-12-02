@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class AuthController {
 
-    @PostMapping
+    @PostMapping("login")
     public void login(){
 
     }
-    @PostMapping
+    @PostMapping("register")
     public void register(){
 
     }
