@@ -3,12 +3,12 @@ package com.example.charr;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/character")
 public class CharController {
 
     @GetMapping
     public String getCharacter(){
-        return "";
+        return "character";
     }
     @PostMapping
     public void createCharacter(){
