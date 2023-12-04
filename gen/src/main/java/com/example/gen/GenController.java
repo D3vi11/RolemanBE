@@ -10,6 +10,6 @@ public class GenController {
 
     @GetMapping
     public String getGen(){
-        return "";
+        return "Generator";
     }
 }

@@ -8,7 +8,7 @@ public class DataController {
 
     @GetMapping
     public String getData(){
-        return "";
+        return "Data";
     }
     @PostMapping
     public void postData(){

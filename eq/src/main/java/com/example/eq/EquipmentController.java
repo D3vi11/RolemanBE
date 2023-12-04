@@ -8,7 +8,7 @@ public class EquipmentController {
 
     @GetMapping
     public String getEquipment(){
-        return "";
+        return "Equipment";
     }
     @PostMapping
     public void addEquipment(){
