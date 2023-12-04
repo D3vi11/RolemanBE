@@ -7,16 +7,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class WeatherController {
 
-    @Value("${test.value}")
-    private String value;
-
-    @GetMapping("test")
-    public String test(){
-        return value;
-    }
     @GetMapping
     public String getWeather(){
-        return "";
+        return "Weather";
     }
     @PostMapping
     public void addWeather(){
