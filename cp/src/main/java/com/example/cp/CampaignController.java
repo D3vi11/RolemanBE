@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class CampaignController {
     @GetMapping
     public String getCampaign(){
-        return "";
+        return "campaign";
     }
     @PostMapping
     public void addCampaign(){

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class CalendarController {
     @GetMapping
     public String getCalendar(){
-        return "";
+        return "calendar";
     }
     @PostMapping
     public void addCalendar(){

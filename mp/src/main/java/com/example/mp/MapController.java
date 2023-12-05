@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class MapController {
     @GetMapping
     public String getMap(){
-        return "";
+        return "Map";
     }
     @PostMapping
     public void addMap(){
