@@ -28,8 +28,6 @@ public class GatewayConfiguration {
                         .uri("lb://authorization"))
                 .route("calendar", r -> r.path("/calendar/**")
                         .uri("lb://calendar"))
-                .route("config-server", r -> r.path("/config-server/**")
-                        .uri("lb://config-server"))
                 .build();
     }
 }
