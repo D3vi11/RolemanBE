@@ -3,7 +3,7 @@ package com.example.eq;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/equipment")
 public class EquipmentController {
 
     @GetMapping

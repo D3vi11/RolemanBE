@@ -3,7 +3,7 @@ package com.example.data;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/data")
 public class DataController {
 
     @GetMapping

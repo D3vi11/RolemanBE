@@ -3,7 +3,7 @@ package com.example.cal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/calendar")
 public class CalendarController {
     @GetMapping
     public String getCalendar(){
