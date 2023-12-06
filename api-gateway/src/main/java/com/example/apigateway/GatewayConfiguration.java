@@ -10,33 +10,26 @@ public class GatewayConfiguration {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("character", r -> r.path("/character")
-                        .uri("http://localhost/8081"))
-                .route("campaign", r -> r.path("/campaign")
-                        .uri("http://localhost/8082"))
-                .route("data", r -> r.path("/data")
-                        .uri("http://localhost/8083"))
-                .route("equipment", r -> r.path("/equipment")
-                        .uri("http://localhost/8084"))
-                .route("generator", r -> r.path("/generator")
-                        .uri("http://localhost/8085"))
-                .route("map", r -> r.path("/map")
-                        .uri("http://localhost/8086"))
-                .route("weather", r -> r.path("/weather")
-                        .uri("http://localhost/8087"))
-                .route("authorization", r -> r.path("/authorization")
-                        .uri("http://localhost/8088"))
-                .route("calendar", r -> r.path("/calendar")
-                        .uri("http://localhost/8089"))
-                .route("config-server", r -> r.path("/config-server")
-                        .uri("http://localhost/8090"))
+                .route("character", r -> r.path("/character/**")
+                        .uri("lb://character"))
+                .route("campaign", r -> r.path("/campaign/**")
+                        .uri("lb://campaign"))
+                .route("data", r -> r.path("/data/**")
+                        .uri("lb://data"))
+                .route("equipment", r -> r.path("/equipment/**")
+                        .uri("lb://equipment"))
+                .route("generator", r -> r.path("/generator/**")
+                        .uri("lb://generator"))
+                .route("map", r -> r.path("/map/**")
+                        .uri("lb://map"))
+                .route("weather", r -> r.path("/weather/**")
+                        .uri("lb://weather"))
+                .route("authorization", r -> r.path("/authorization/**")
+                        .uri("lb://authorization"))
+                .route("calendar", r -> r.path("/calendar/**")
+                        .uri("lb://calendar"))
+                .route("config-server", r -> r.path("/config-server/**")
+                        .uri("lb://config-server"))
                 .build();
     }
-//@Bean
-//public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-//    return builder.routes()
-//            .route("character", r -> r.path("/")
-//                    .uri("https://google.com"))
-//            .build();
-//}
 }

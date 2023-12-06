@@ -3,7 +3,7 @@ package com.example.mp;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/map")
 public class MapController {
     @GetMapping
     public String getMap(){

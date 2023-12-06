@@ -1,10 +1,9 @@
 package com.example.wth;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/weather")
 public class WeatherController {
 
     @GetMapping

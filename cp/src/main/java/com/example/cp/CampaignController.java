@@ -3,7 +3,7 @@ package com.example.cp;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/campaign")
 public class CampaignController {
     @GetMapping
     public String getCampaign(){
