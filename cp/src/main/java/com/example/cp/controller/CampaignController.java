@@ -1,9 +1,9 @@
-package com.example.cp;
+package com.example.cp.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/campaign")
+@RequestMapping("")
 public class CampaignController {
     @GetMapping
     public String getCampaign(){

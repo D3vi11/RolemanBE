@@ -1,9 +1,9 @@
-package com.example.mp;
+package com.example.mp.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/map")
+@RequestMapping("")
 public class MapController {
     @GetMapping
     public String getMap(){

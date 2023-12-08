@@ -1,9 +1,9 @@
-package com.example.auth;
+package com.example.auth.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/authorization")
+@RequestMapping("")
 public class AuthController {
 
     @GetMapping
