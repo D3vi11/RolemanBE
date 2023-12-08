@@ -1,9 +1,9 @@
-package com.example.wth;
+package com.example.wth.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/weather")
+@RequestMapping("")
 public class WeatherController {
 
     @GetMapping

@@ -1,9 +1,9 @@
-package com.example.data;
+package com.example.data.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/data")
+@RequestMapping("")
 public class DataController {
 
     @GetMapping

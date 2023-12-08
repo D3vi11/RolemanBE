@@ -1,11 +1,11 @@
-package com.example.gen;
+package com.example.gen.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/generator")
+@RequestMapping("")
 public class GenController {
 
     @GetMapping

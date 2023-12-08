@@ -1,9 +1,9 @@
-package com.example.eq;
+package com.example.eq.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/equipment")
+@RequestMapping("")
 public class EquipmentController {
 
     @GetMapping

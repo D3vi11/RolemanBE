@@ -1,9 +1,9 @@
-package com.example.charr;
+package com.example.charr.controller;
 
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/character")
+@RequestMapping("")
 public class CharController {
 
     @GetMapping

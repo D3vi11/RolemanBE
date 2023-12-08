@@ -2,15 +2,21 @@ package com.example.apigateway;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.properties.SwaggerUiConfigParameters;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.cloud.gateway.route.RouteDefinition;
+import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Objects;
 
 @Configuration
 public class SwaggerConfig {
 
+
     @Bean
-    public OpenAPI openAPI(){
+    public OpenAPI apiConfig() {
         return new OpenAPI()
                 .info(new Info()
                         .title("Roleman API")
@@ -19,59 +25,25 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi authorizationApi(){
-        return GroupedOpenApi.builder()
-                .group("authorization")
-                .pathsToMatch("/authorization/**")
-                .build();
+    public CommandLineRunner openApiGroups(
+            RouteDefinitionLocator locator,
+            SwaggerUiConfigParameters swaggerUiParameters) {
+        return args -> Objects.requireNonNull(locator
+                        .getRouteDefinitions().collectList().block())
+                .stream()
+                .map(RouteDefinition::getId)
+                .filter(id -> id.matches("ReactiveCompositeDiscoveryClient_.*"))
+                .map(id -> id.replace("ReactiveCompositeDiscoveryClient_", "").toLowerCase())
+                .filter(this::removeConfigs)
+                .forEach(swaggerUiParameters::addGroup);
     }
-    @Bean
-    public GroupedOpenApi calendarApi(){
-        return GroupedOpenApi.builder()
-                .group("calendar")
-                .pathsToMatch("/calendar/**")
-                .build();
+
+    private boolean removeConfigs(String value){
+        if(value.equals("config-server")||value.equals("api-gateway")){
+            return false;
+        }
+        return true;
     }
-    @Bean
-    public GroupedOpenApi characterApi(){
-        return GroupedOpenApi.builder()
-                .group("character")
-                .pathsToMatch("/character/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi dataApi(){
-        return GroupedOpenApi.builder()
-                .group("data")
-                .pathsToMatch("/data/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi equipmentApi(){
-        return GroupedOpenApi.builder()
-                .group("equipment")
-                .pathsToMatch("/equipment/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi generatorApi(){
-        return GroupedOpenApi.builder()
-                .group("generator")
-                .pathsToMatch("/generator/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi mapApi(){
-        return GroupedOpenApi.builder()
-                .group("map")
-                .pathsToMatch("/map/**")
-                .build();
-    }
-    @Bean
-    public GroupedOpenApi weatherApi(){
-        return GroupedOpenApi.builder()
-                .group("weather")
-                .pathsToMatch("/weather/**")
-                .build();
-    }
+
+
 }
