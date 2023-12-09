@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("")
 public class CalendarController {
-
-    @Value("${mongo.password}")
-    private String value;
     @GetMapping
     public String getCalendar(){
-        return "calendar "+value;
+        return "calendar";
     }
     @PostMapping
     public void addCalendar(){
