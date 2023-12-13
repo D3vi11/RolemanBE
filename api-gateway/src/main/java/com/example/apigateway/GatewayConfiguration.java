@@ -32,7 +32,7 @@ public class GatewayConfiguration {
                         .uri("lb://generator"))
                 .route("map", r -> r.order(1)
                         .path("/map/**")
-                        .filters(f->f.rewritePath("/map",""))
+                        .filters(f->f.rewritePath("/map","/"))
                         .uri("lb://map"))
                 .route("weather", r -> r.order(1)
                         .path("/weather/**")
