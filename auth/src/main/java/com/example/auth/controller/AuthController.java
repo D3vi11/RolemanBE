@@ -37,7 +37,7 @@ public class AuthController {
         return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @GetMapping("confirm")
-    public ResponseEntity<String> confirmAccount(@RequestBody String token){
+    public ResponseEntity<String> confirmAccount(@RequestParam String token){
         return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @PutMapping
