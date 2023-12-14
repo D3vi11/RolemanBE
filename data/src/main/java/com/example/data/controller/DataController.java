@@ -1,5 +1,7 @@
 package com.example.data.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 public class DataController {
 
     @GetMapping
-    public String getData(){
-        return "Data";
+    public ResponseEntity<String> getData(){
+        return new ResponseEntity<>("Work in progress", HttpStatus.I_AM_A_TEAPOT);
     }
     @PostMapping
-    public void postData(){
-
+    public ResponseEntity<String> postData(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @PutMapping
-    public void putData(){
-
+    public ResponseEntity<String> putData(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @DeleteMapping
-    public void deleteData(){
-
+    public ResponseEntity<String> deleteData(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
 }

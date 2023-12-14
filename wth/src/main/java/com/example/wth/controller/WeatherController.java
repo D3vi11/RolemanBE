@@ -1,5 +1,7 @@
 package com.example.wth.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 public class WeatherController {
 
     @GetMapping
-    public String getWeather(){
-        return "Weather";
+    public ResponseEntity<String> getWeather(){
+        return new ResponseEntity<>("Work in progress", HttpStatus.I_AM_A_TEAPOT);
     }
     @PostMapping
-    public void addWeather(){
-
+    public ResponseEntity<String> addWeather(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @PatchMapping
-    public void updateWeather(){
-
+    public ResponseEntity<String> updateWeather(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @DeleteMapping
-    public void removeWeather(){
-
+    public ResponseEntity<String> removeWeather(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
 }

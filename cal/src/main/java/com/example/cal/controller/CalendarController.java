@@ -1,5 +1,7 @@
 package com.example.cal.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 public class CalendarController {
 
     @GetMapping
-    public String getCalendar(){
-        return "calendar";
+    public ResponseEntity<String> getCalendar(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @PostMapping
-    public void addCalendar(){
-
+    public ResponseEntity<String> addCalendar(){
+        return new ResponseEntity<>("Work in progress", HttpStatus.I_AM_A_TEAPOT);
     }
     @PatchMapping
-    public void updateCalendar(){
-
+    public ResponseEntity<String> updateCalendar(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @DeleteMapping
-    public void removeCalendar(){
-
+    public ResponseEntity<String> removeCalendar(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
 }

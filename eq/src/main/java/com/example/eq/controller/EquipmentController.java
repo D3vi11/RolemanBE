@@ -1,5 +1,7 @@
 package com.example.eq.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -7,19 +9,19 @@ import org.springframework.web.bind.annotation.*;
 public class EquipmentController {
 
     @GetMapping
-    public String getEquipment(){
-        return "Equipment";
+    public ResponseEntity<String> getEquipment(){
+        return new ResponseEntity<>("Work in progress", HttpStatus.I_AM_A_TEAPOT);
     }
     @PostMapping
-    public void addEquipment(){
-
+    public ResponseEntity<String> addEquipment(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @PatchMapping
-    public void updateEquipment(){
-
+    public ResponseEntity<String> updateEquipment(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @DeleteMapping
-    public void removeEquipment(){
-
+    public ResponseEntity<String> removeEquipment(){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
 }

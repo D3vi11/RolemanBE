@@ -5,9 +5,7 @@ import com.example.auth.dto.RegisterDto;
 import com.example.auth.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +27,10 @@ public class AuthController {
     }
     @PostMapping("validate")
     public ResponseEntity<String> validateToken(@RequestBody String token){
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+    }
+    @PostMapping("logout")
+    public ResponseEntity<String> logout(){
         return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
 
