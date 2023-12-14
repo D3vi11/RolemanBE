@@ -4,6 +4,7 @@ import com.example.auth.dto.RegisterDto;
 import com.example.auth.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDto registerDto){
         userService.registerUser(registerDto);
-        return new ResponseEntity<>("Rejestracja się powiodła, przesłano maila na xd@xd.xd. Konto należy potwierdzić w ciągu 7 dni albo zostanie usunięte ", HttpStatus.OK);
+        return new ResponseEntity<>("Rejestracja się powiodła, przesłano maila na "+registerDto.getEmail()+". Konto należy potwierdzić w ciągu 7 dni albo zostanie usunięte ", HttpStatus.OK);
     }
     @PutMapping
     public void update(){
