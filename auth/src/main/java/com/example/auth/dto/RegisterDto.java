@@ -1,6 +1,6 @@
 package com.example.auth.dto;
 
-import jakarta.validation.constraints.Email;
+import com.example.auth.validation.annotation.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
