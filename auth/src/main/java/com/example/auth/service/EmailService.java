@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
 public class EmailService {
     @NonNull
     private JavaMailSender javaMailSender;
-    @Value("${auth.url}")
-    private String authUrl;
+    @Value("${app.address}")
+    private String appAddress;
 
     public void sendEmail(String email, String token){
-        String confirmationUrl = authUrl+"/confirm?token="+token;
+        String confirmationUrl = appAddress+"/confirm?token="+token;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
