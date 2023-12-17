@@ -2,6 +2,8 @@ FROM alpine:3.19.0
 
 RUN apk update && apk upgrade && apk add openjdk17-jre-headless
 
+VOLUME /app/keys
+
 WORKDIR /app
 
 ENV KEYSTORE=file:///app/keys/keystore.p12
