@@ -1,0 +1,15 @@
+FROM alpine:3.19.0
+
+RUN apk update && apk upgrade && apk add openjdk17-jre-headless
+
+WORKDIR /app
+
+ENV KEYSTORE=file:///app/keys/keystore.p12
+
+ENV EUREKA=http://eureka:8761/eureka
+
+ENV REPOSITORY=https://github.com/D3vi11/RolemanConfig
+
+COPY ./target/config-server-0.0.1-SNAPSHOT.jar ./confir-server.jar
+
+ENTRYPOINT ["java","-jar","/app/confir-server.jar"]

@@ -1,0 +1,11 @@
+FROM alpine:3.19.0
+
+RUN apk update && apk upgrade && apk add openjdk17-jre-headless
+
+WORKDIR /app
+
+ENV CONFIG=http://config:8888
+
+COPY ./target/cp-0.0.1-SNAPSHOT.jar ./cp.jar
+
+ENTRYPOINT ["java","-jar","/app/cp.jar"]
