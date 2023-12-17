@@ -1,6 +1,6 @@
-FROM alpine:3.19.0
+FROM eclipse-temurin:17-jre-alpine
 
-RUN apk update && apk upgrade && apk add openjdk17-jre-headless
+RUN apk update && apk upgrade
 
 VOLUME /app/keys
 
