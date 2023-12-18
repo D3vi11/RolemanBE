@@ -13,16 +13,6 @@ pipeline{
                 sh './mvnw clean package -pl config-server'
             }
         }
-        stage('test'){
-            steps{
-
-            }
-        }
-        stage('package'){
-            steps{
-
-            }
-        }
         stage('build'){
             steps{
                 sh 'docker build -t config-server .'
