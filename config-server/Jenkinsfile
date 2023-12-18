@@ -5,17 +5,17 @@ pipeline{
     stages{
         stage('clean'){
             steps{
-                sh 'mvn clean'
+                sh './mvnw clean'
             }
         }
         stage('test'){
             steps{
-                sh 'mvn test'
+                sh './mvnw test'
             }
         }
         stage('package'){
             steps{
-                sh 'mvn clean package'
+                sh './mvnw clean package'
             }
         }
         stage('build'){
