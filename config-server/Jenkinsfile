@@ -8,6 +8,8 @@ pipeline{
                 sh 'pwd'
                 sh 'ls'
                 sh 'cd config-server'
+                sh 'pwd'
+                sh 'ls'
                 sh './mvnw clean'
             }
         }
