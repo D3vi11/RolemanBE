@@ -5,6 +5,8 @@ pipeline{
     stages{
         stage('clean'){
             steps{
+                sh 'pwd'
+                sh 'ls'
                 sh './mvnw clean'
             }
         }
