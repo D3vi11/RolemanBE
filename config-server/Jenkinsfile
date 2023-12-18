@@ -8,19 +8,19 @@ pipeline{
                 sh 'chmod +x mvnw'
             }
         }
-        stage('clean'){
+        stage('package'){
             steps{
-                sh './mvnw clean'
+                sh './mvnw clean package -pl config-server'
             }
         }
         stage('test'){
             steps{
-                sh './mvnw test'
+
             }
         }
         stage('package'){
             steps{
-                sh './mvnw clean package'
+
             }
         }
         stage('build'){
