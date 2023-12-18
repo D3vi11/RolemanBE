@@ -3,6 +3,11 @@ pipeline{
         label 'jenkins-agent'
     }
     stages{
+        stage('mvnw permission'){
+            steps{
+                sh 'chmod +x mvnw'
+            }
+        }
         stage('clean'){
             steps{
                 sh './mvnw clean'
