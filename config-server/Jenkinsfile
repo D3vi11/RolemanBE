@@ -5,12 +5,7 @@ pipeline{
     stages{
         stage('clean'){
             steps{
-                sh 'pwd'
-                sh 'ls'
-                sh 'cd config-server'
-                sh 'pwd'
-                sh 'ls'
-                sh './mvnw clean'
+                sh './config-server/mvnw clean'
             }
         }
         stage('test'){
