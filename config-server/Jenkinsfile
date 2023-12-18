@@ -1,0 +1,43 @@
+pipeline{
+    agent{
+        label 'jenkins-agent'
+    }
+    stages{
+        stage('clean'){
+            steps{
+                sh './mvnw clean'
+            }
+        }
+        stage('test'){
+            steps{
+                sh './mvnw test'
+            }
+        }
+        stage('package'){
+            steps{
+                sh './mvnw clean package'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'docker build -t config-server .'
+            }
+        }
+        stage('remove existing container'){
+            steps{
+                script{
+                    def container="config-server"
+                    def exists = sh(script: docker ps -a --format '{{.Names}}' | grep -w ${containerName}", returnStatus: true) == 0
+                    if(exists){
+                        docker rm config-server
+                    }
+                }
+            }
+        }
+        stage('start new container'){
+            steps{
+                sh 'docker run -d -p 8888:8888 --name config-server config-server'
+            }
+        }
+    }
+}
