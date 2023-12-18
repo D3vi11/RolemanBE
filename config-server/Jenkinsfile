@@ -5,8 +5,7 @@ pipeline{
     stages{
         stage('clean'){
             steps{
-                sh 'chmod +x ./config-server/mvnw'
-                sh './config-server/mvnw clean'
+                sh './mvnw clean'
             }
         }
         stage('test'){
