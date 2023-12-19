@@ -15,16 +15,16 @@ pipeline{
         }
         stage('build'){
             steps{
-                sh 'docker build -t config-server ./config-server'
+                sh 'docker build -t map ./mp'
             }
         }
         stage('stop container'){
             steps{
                 script{
-                    def container="config-server"
+                    def container="map"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop config-server
+                        docker stop map
                     }
                 }
             }
@@ -32,17 +32,17 @@ pipeline{
         stage('remove container'){
             steps{
                 script{
-                    def container="config-server"
+                    def container="map"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm config-server
+                        docker rm map
                     }
                 }
             }
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8086:8086 -v /app/keys:/app/keys --name config-server config-server'
+                sh 'docker run -d -p 8086:8086 --network RolemanNetwork --name map map'
             }
         }
     }

@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8085:8085 --name generator generator'
+                sh 'docker run -d -p 8085:8085 --network RolemanNetwork --name generator generator'
             }
         }
     }

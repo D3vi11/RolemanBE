@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8089:8089 --name calendar calendar'
+                sh 'docker run -d -p 8089:8089 --network RolemanNetwork --name calendar calendar'
             }
         }
     }

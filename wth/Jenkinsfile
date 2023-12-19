@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8087:8087 --name weather weather'
+                sh 'docker run -d -p 8087:8087 --network RolemanNetwork --name weather weather'
             }
         }
     }

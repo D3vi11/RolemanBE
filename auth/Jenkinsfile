@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8088:8088 --name authorization authorization'
+                sh 'docker run -d -p 8088:8088 --network RolemanNetwork --name authorization authorization'
             }
         }
     }

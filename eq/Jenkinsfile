@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8084:8084 --name equipment equipment'
+                sh 'docker run -d -p 8084:8084 --network RolemanNetwork --name equipment equipment'
             }
         }
     }

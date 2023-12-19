@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8083:8083 --name data data'
+                sh 'docker run -d -p 8083:8083 --network RolemanNetwork --name data data'
             }
         }
     }

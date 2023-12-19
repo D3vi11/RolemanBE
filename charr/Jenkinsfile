@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8081:8081 --name character character'
+                sh 'docker run -d -p 8081:8081 --network RolemanNetwork --name character character'
             }
         }
     }
