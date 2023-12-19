@@ -10,28 +10,28 @@ pipeline{
         }
         stage('package'){
             steps{
-                sh './mvnw clean package -pl config-server'
+                sh './mvnw clean package -pl service-discovery'
             }
         }
         stage('build'){
             steps{
-                sh 'docker build -t config-server ./config-server'
+                sh 'docker build -t eureka ./service-discovery'
             }
         }
         stage('remove existing container'){
             steps{
                 script{
-                    def container="config-server"
+                    def container="eureka"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm config-server
+                        docker rm eureka
                     }
                 }
             }
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8888:8888 -v /app/keys:/app/keys --name config-server config-server'
+                sh 'docker run -d -p 8761:8761 --name eureka eureka'
             }
         }
     }

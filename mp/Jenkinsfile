@@ -31,7 +31,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8888:8888 -v /app/keys:/app/keys --name config-server config-server'
+                sh 'docker run -d -p 8086:8086 -v /app/keys:/app/keys --name config-server config-server'
             }
         }
     }
