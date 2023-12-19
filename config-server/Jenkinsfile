@@ -15,7 +15,7 @@ pipeline{
         }
         stage('build'){
             steps{
-                sh 'docker build -t config-server .'
+                sh 'docker build -t config-server ./config-server'
             }
         }
         stage('remove existing container'){
