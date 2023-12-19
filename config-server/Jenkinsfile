@@ -15,16 +15,16 @@ pipeline{
         }
         stage('build'){
             steps{
-                sh 'docker build -t config-server ./config-server'
+                sh 'docker build -t config ./config-server'
             }
         }
         stage('stop container'){
             steps{
                 script{
-                    def container="config-server"
+                    def container="config"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                         docker stop config-server
+                         docker stop config
                     }
                 }
             }
@@ -32,17 +32,17 @@ pipeline{
         stage('remove container'){
             steps{
                 script{
-                    def container="config-server"
+                    def container="config"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm config-server
+                        docker rm config
                     }
                 }
             }
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8888:8888 -v /app/keys:/app/keys --name config-server config-server'
+                sh 'docker run -d -p 8888:8888 -v /app/keys:/app/keys --name config config'
             }
         }
     }
