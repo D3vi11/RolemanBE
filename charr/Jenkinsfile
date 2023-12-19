@@ -24,7 +24,7 @@ pipeline{
                     def container="character"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop character
+                        sh 'docker stop character'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="character"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm character
+                        sh 'docker rm character'
                     }
                 }
             }

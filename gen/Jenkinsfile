@@ -24,7 +24,7 @@ pipeline{
                     def container="generator"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop generator
+                        sh 'docker stop generator'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="generator"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm generator
+                        sh 'docker rm generator'
                     }
                 }
             }

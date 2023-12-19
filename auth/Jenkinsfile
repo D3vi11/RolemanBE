@@ -24,7 +24,7 @@ pipeline{
                     def container="authorization"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop authorization
+                        sh 'docker stop authorization'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="authorization"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm authorization
+                        sh 'docker rm authorization'
                     }
                 }
             }

@@ -24,7 +24,7 @@ pipeline{
                     def container="map"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop map
+                        sh 'docker stop map'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="map"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm map
+                        sh 'docker rm map'
                     }
                 }
             }

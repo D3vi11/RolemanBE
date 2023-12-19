@@ -24,7 +24,7 @@ pipeline{
                     def container="weather"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop weather
+                        sh 'docker stop weather'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="weather"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm weather
+                        sh 'docker rm weather'
                     }
                 }
             }

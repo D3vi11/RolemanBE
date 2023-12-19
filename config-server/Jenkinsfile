@@ -24,7 +24,7 @@ pipeline{
                     def container="config"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                         docker stop config
+                         sh 'docker stop config'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="config"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm config
+                        sh 'docker rm config'
                     }
                 }
             }

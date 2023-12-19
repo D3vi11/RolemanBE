@@ -24,7 +24,7 @@ pipeline{
                     def container="calendar"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop calendar
+                        sh 'docker stop calendar'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="calendar"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm calendar
+                        sh 'docker rm calendar'
                     }
                 }
             }

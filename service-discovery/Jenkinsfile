@@ -24,7 +24,7 @@ pipeline{
                     def container="eureka"
                     def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker stop eureka
+                        sh 'docker stop eureka'
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline{
                     def container="eureka"
                     def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
-                        docker rm eureka
+                        sh 'docker rm eureka'
                     }
                 }
             }
