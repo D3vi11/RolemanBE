@@ -51,20 +51,21 @@ public class AuthController {
     @PutMapping("change/password")
     public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto){
         userService.changePassword(changePasswordDto);
-        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>("Hasło zostało zmienione",HttpStatus.OK);
     }
-    @PutMapping("change/login")
+    @PutMapping("change/username")
     public ResponseEntity<String> changeUsername(@Valid @RequestBody ChangeUsernameDto changeUsernameDto){
         userService.changeUsername(changeUsernameDto);
-        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>("Nazwa użytkownika została zmieniona na: "+changeUsernameDto.getNewUsername(),HttpStatus.OK);
     }
     @PutMapping("change/email")
     public ResponseEntity<String> changeEmail(@Valid @RequestBody ChangeEmailDto changeEmailDto){
         userService.changeEmail(changeEmailDto);
-        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>("Email został zmieniony na: "+ changeEmailDto.getNewEmail(),HttpStatus.OK);
     }
-    @DeleteMapping
-    public ResponseEntity<String> delete(){
-        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+    @DeleteMapping("user")
+    public ResponseEntity<String> delete(@Valid @RequestBody LoginDto loginDto){
+        userService.deleteUser(loginDto);
+        return new ResponseEntity<>("Użytkownik: "+loginDto.getUsername()+" został usunięty", HttpStatus.OK);
     }
 }

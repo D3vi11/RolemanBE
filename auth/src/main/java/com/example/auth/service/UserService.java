@@ -97,6 +97,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void deleteUser(LoginDto loginDto){
+        User user = userRepository.findByUsername(loginDto.getUsername())
+                .filter(u -> passwordEncoder.matches(loginDto.getPassword(), u.getPassword()))
+                .orElseThrow(() -> new UserExistsException("Niepoprawne dane użytkownika lub użytkownik nie istnieje"));
+
+        userRepository.delete(user);
+    }
+
     private User mapToUser(RegisterDto registerDto, String token) {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
         return new User(registerDto.getUsername(), encodedPassword, registerDto.getEmail(), false, 7, token, Instant.now());
