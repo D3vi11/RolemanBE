@@ -6,6 +6,8 @@ WORKDIR /app
 
 ENV CONFIG=http://config:8888
 
+EXPOSE 8085
+
 COPY ./target/gen-0.0.1-SNAPSHOT.jar ./gen.jar
 
 ENTRYPOINT ["java","-jar","/app/gen.jar"]
