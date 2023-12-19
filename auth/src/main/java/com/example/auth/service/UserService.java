@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,45 +25,53 @@ public class UserService {
     JwtService jwtService;
 
     public void registerUser(RegisterDto registerDto) {
-        if(!userRepository.findByUsername(registerDto.getUsername()).isEmpty()){
-            throw new IncorrectRegistrationException("Użytkownik z tym loginem istnieje");
-        }
-        if(!userRepository.findByEmail(registerDto.getEmail()).isEmpty()){
-            throw new IncorrectRegistrationException("Użytkownik z tym emailem istnieje");
-        }
+        userRepository.findByUsername(registerDto.getUsername())
+                .ifPresent(u -> {
+                    throw new IncorrectRegistrationException("Użytkownik z tym loginem istnieje");
+                });
+
+        userRepository.findByUsername(registerDto.getEmail())
+                .ifPresent(u -> {
+                    throw new IncorrectRegistrationException("Użytkownik z tym emailem istnieje");
+                });
+
         String token = generateToken();
-        emailService.sendEmail(registerDto.getEmail(),token);
-        userRepository.save(mapToUser(registerDto,token));
+        emailService.sendEmail(registerDto.getEmail(), token);
+        userRepository.save(mapToUser(registerDto, token));
     }
 
-    public void confirmUser(String token){
-        List<User> users = userRepository.findByConfirmationToken(token);
-        if(users.isEmpty()){
-            throw new IncorrectConfirmationException("Token weryfikacyjny niepoprawny lub nieważny");
-        }
-        if(users.get(0).getIsActive()){
+    public void confirmUser(String token) {
+        User user = userRepository.findByConfirmationToken(token)
+                .orElseThrow(() -> new IncorrectConfirmationException("Token weryfikacyjny niepoprawny lub nieważny"));
+
+        if (user.getIsActive()) {
             throw new IncorrectConfirmationException("Konto zostało już potwierdzone");
         }
-        users.get(0).setIsActive(true);
-        userRepository.save(users.get(0));
+        user.setIsActive(true);
+        userRepository.save(user);
     }
 
-    public String loginUser(LoginDto loginDto){
-        List<User> users = userRepository.findByUsername(loginDto.getUsername());
-        if(users.isEmpty()||!passwordEncoder.matches(loginDto.getPassword(),users.get(0).getPassword())){
-            throw new IncorrectLoginException("Niepoprawny login lub hasło");
-        }
-        if(!users.get(0).getIsActive()){
+    public String loginUser(LoginDto loginDto) {
+        User user = userRepository.findByUsername(loginDto.getUsername())
+                .filter(u -> passwordEncoder.matches(loginDto.getPassword(), u.getPassword()))
+                .orElseThrow(() -> new IncorrectLoginException("Niepoprawny login lub hasło"));
+
+        if (!user.getIsActive()) {
             throw new IncorrectLoginException("Użytkownik nie jest aktywny");
         }
         return jwtService.generateToken(loginDto.getUsername());
     }
 
-    private User mapToUser(RegisterDto registerDto, String token){
+    public void changePassword(LoginDto loginDto, String newPassword) {
+
+    }
+
+    private User mapToUser(RegisterDto registerDto, String token) {
         String encodedPassword = passwordEncoder.encode(registerDto.getPassword());
         return new User(registerDto.getUsername(), encodedPassword, registerDto.getEmail(), false, 7, token, Instant.now());
     }
-    private String generateToken(){
+
+    private String generateToken() {
         return UUID.randomUUID().toString();
     }
 }

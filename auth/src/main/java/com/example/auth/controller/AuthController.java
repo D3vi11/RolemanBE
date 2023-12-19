@@ -5,8 +5,6 @@ import com.example.auth.dto.RegisterDto;
 import com.example.auth.service.JwtService;
 import com.example.auth.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.core.MultivaluedHashMap;
-import jakarta.ws.rs.core.MultivaluedMap;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("")
@@ -42,10 +38,6 @@ public class AuthController {
     public ResponseEntity<Boolean> validateToken(@RequestHeader("Authorization") String token){
         return new ResponseEntity<>(jwtService.validateToken(token),HttpStatus.OK);
     }
-    @PostMapping("logout")
-    public ResponseEntity<String> logout(){
-        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
-    }
 
     @PostMapping("token")
     public ResponseEntity<String> refreshToken(){
@@ -57,7 +49,8 @@ public class AuthController {
         return new ResponseEntity<>("Konto zostało potwierdzone",HttpStatus.OK);
     }
     @PutMapping
-    public ResponseEntity<String> update(){
+    public ResponseEntity<String> changePassword(@Valid @RequestBody LoginDto loginDto, @RequestBody String newPassword){
+        userService.changePassword(loginDto,newPassword);
         return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @DeleteMapping
