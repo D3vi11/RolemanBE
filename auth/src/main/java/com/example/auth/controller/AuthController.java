@@ -1,9 +1,9 @@
 package com.example.auth.controller;
 
-import com.example.auth.dto.LoginDto;
-import com.example.auth.dto.RegisterDto;
+import com.example.auth.dto.*;
 import com.example.auth.service.JwtService;
 import com.example.auth.service.UserService;
+import com.example.auth.validation.annotation.Email;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,9 +48,19 @@ public class AuthController {
         userService.confirmUser(token);
         return new ResponseEntity<>("Konto zostało potwierdzone",HttpStatus.OK);
     }
-    @PutMapping
-    public ResponseEntity<String> changePassword(@Valid @RequestBody LoginDto loginDto, @RequestBody String newPassword){
-        userService.changePassword(loginDto,newPassword);
+    @PutMapping("change/password")
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto){
+        userService.changePassword(changePasswordDto);
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+    }
+    @PutMapping("change/login")
+    public ResponseEntity<String> changeUsername(@Valid @RequestBody ChangeUsernameDto changeUsernameDto){
+        userService.changeUsername(changeUsernameDto);
+        return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
+    }
+    @PutMapping("change/email")
+    public ResponseEntity<String> changeEmail(@Valid @RequestBody ChangeEmailDto changeEmailDto){
+        userService.changeEmail(changeEmailDto);
         return new ResponseEntity<>("Work in progress",HttpStatus.I_AM_A_TEAPOT);
     }
     @DeleteMapping

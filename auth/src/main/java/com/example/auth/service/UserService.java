@@ -1,11 +1,11 @@
 package com.example.auth.service;
 
-import com.example.auth.dto.LoginDto;
-import com.example.auth.dto.RegisterDto;
+import com.example.auth.dto.*;
 import com.example.auth.entity.User;
 import com.example.auth.exception.IncorrectConfirmationException;
 import com.example.auth.exception.IncorrectLoginException;
 import com.example.auth.exception.IncorrectRegistrationException;
+import com.example.auth.exception.UserExistsException;
 import com.example.auth.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,8 +62,39 @@ public class UserService {
         return jwtService.generateToken(loginDto.getUsername());
     }
 
-    public void changePassword(LoginDto loginDto, String newPassword) {
+    public void changePassword(ChangePasswordDto changePasswordDto) {
+        User user = userRepository.findByUsername(changePasswordDto.getUsername())
+                .filter(u -> passwordEncoder.matches(changePasswordDto.getPassword(), u.getPassword()))
+                .orElseThrow(() -> new IncorrectLoginException("Niepoprawny login lub hasło"));
 
+        user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    public void changeUsername(ChangeUsernameDto changeUsernameDto){
+        User user = userRepository.findByUsername(changeUsernameDto.getUsername())
+                .filter(u -> passwordEncoder.matches(changeUsernameDto.getPassword(), u.getPassword()))
+                .orElseThrow(()-> new IncorrectLoginException("Niepoprawny login lub hasło"));
+
+        userRepository.findByUsername(changeUsernameDto.getNewUsername()).ifPresent(user1 -> {
+            throw new UserExistsException("Użytkownik z podanym loginem już istnieje");
+        });
+
+        user.setUsername(changeUsernameDto.getNewUsername());
+        userRepository.save(user);
+    }
+
+    public void changeEmail(ChangeEmailDto changeEmailDto) {
+        User user = userRepository.findByUsername(changeEmailDto.getUsername())
+                .filter(u -> passwordEncoder.matches(changeEmailDto.getPassword(), u.getPassword()))
+                .orElseThrow(() -> new IncorrectLoginException("Niepoprawny login lub hasło"));
+
+        userRepository.findByEmail(changeEmailDto.getNewEmail()).ifPresent(user1 -> {
+            throw new UserExistsException("Użytkownik z podanym emailem już istnieje");
+        });
+
+        user.setEmail(changeEmailDto.getNewEmail());
+        userRepository.save(user);
     }
 
     private User mapToUser(RegisterDto registerDto, String token) {
