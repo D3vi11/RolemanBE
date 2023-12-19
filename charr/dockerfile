@@ -1,0 +1,13 @@
+FROM eclipse-temurin:17-jre-alpine
+
+RUN apk update && apk upgrade
+
+WORKDIR /app
+
+ENV CONFIG=http://config:8888
+
+EXPOSE 8081
+
+COPY ./target/charr-0.0.1-SNAPSHOT.jar ./char.jar
+
+ENTRYPOINT ["java","-jar","/app/char.jar"]

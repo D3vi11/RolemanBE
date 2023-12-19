@@ -1,0 +1,38 @@
+pipeline{
+    agent{
+        label 'jenkins-agent'
+    }
+    stages{
+        stage('mvnw permission'){
+            steps{
+                sh 'chmod +x mvnw'
+            }
+        }
+        stage('package'){
+            steps{
+                sh './mvnw clean package -pl wth'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'docker build -t weather ./wth'
+            }
+        }
+        stage('remove existing container'){
+            steps{
+                script{
+                    def container="weather"
+                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker rm weather
+                    }
+                }
+            }
+        }
+        stage('start new container'){
+            steps{
+                sh 'docker run -d -p 8087:8087 --name weather weather'
+            }
+        }
+    }
+}

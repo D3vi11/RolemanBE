@@ -1,0 +1,19 @@
+FROM eclipse-temurin:17-jre-alpine
+
+RUN apk update && apk upgrade
+
+VOLUME /app/keys
+
+WORKDIR /app
+
+ENV KEYSTORE=file:///app/keys/keystore.p12
+
+ENV EUREKA=http://eureka:8761/eureka
+
+ENV REPOSITORY=https://github.com/D3vi11/RolemanConfig
+
+EXPOSE 8888
+
+COPY ./target/config-server-0.0.1-SNAPSHOT.jar ./confir-server.jar
+
+ENTRYPOINT ["java","-jar","/app/confir-server.jar"]

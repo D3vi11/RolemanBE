@@ -1,0 +1,38 @@
+pipeline{
+    agent{
+        label 'jenkins-agent'
+    }
+    stages{
+        stage('mvnw permission'){
+            steps{
+                sh 'chmod +x mvnw'
+            }
+        }
+        stage('package'){
+            steps{
+                sh './mvnw clean package -pl config-server'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'docker build -t config-server ./config-server'
+            }
+        }
+        stage('remove existing container'){
+            steps{
+                script{
+                    def container="config-server"
+                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker rm config-server
+                    }
+                }
+            }
+        }
+        stage('start new container'){
+            steps{
+                sh 'docker run -d -p 8888:8888 -v /app/keys:/app/keys --name config-server config-server'
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+pipeline{
+    agent{
+        label 'jenkins-agent'
+    }
+    stages{
+        stage('mvnw permission'){
+            steps{
+                sh 'chmod +x mvnw'
+            }
+        }
+        stage('package'){
+            steps{
+                sh './mvnw clean package -pl api-gateway'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'docker build -t gateway ./api-gateway'
+            }
+        }
+        stage('remove existing container'){
+            steps{
+                script{
+                    def container="gateway"
+                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker rm gateway
+                    }
+                }
+            }
+        }
+        stage('start new container'){
+            steps{
+                sh 'docker run -d -p 80:80 --name gateway gateway'
+            }
+        }
+    }
+}

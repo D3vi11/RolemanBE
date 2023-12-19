@@ -1,0 +1,38 @@
+pipeline{
+    agent{
+        label 'jenkins-agent'
+    }
+    stages{
+        stage('mvnw permission'){
+            steps{
+                sh 'chmod +x mvnw'
+            }
+        }
+        stage('package'){
+            steps{
+                sh './mvnw clean package -pl charr'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'docker build -t character ./charr'
+            }
+        }
+        stage('remove existing container'){
+            steps{
+                script{
+                    def container="character"
+                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker rm character
+                    }
+                }
+            }
+        }
+        stage('start new container'){
+            steps{
+                sh 'docker run -d -p 8081:8081 --name character character'
+            }
+        }
+    }
+}

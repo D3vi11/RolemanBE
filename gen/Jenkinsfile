@@ -1,0 +1,38 @@
+pipeline{
+    agent{
+        label 'jenkins-agent'
+    }
+    stages{
+        stage('mvnw permission'){
+            steps{
+                sh 'chmod +x mvnw'
+            }
+        }
+        stage('package'){
+            steps{
+                sh './mvnw clean package -pl gen'
+            }
+        }
+        stage('build'){
+            steps{
+                sh 'docker build -t generator ./gen'
+            }
+        }
+        stage('remove existing container'){
+            steps{
+                script{
+                    def container="generator"
+                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker rm generator
+                    }
+                }
+            }
+        }
+        stage('start new container'){
+            steps{
+                sh 'docker run -d -p 8085:8085 --name generator generator'
+            }
+        }
+    }
+}
