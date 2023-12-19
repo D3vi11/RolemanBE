@@ -10,7 +10,7 @@ pipeline{
         }
         stage('package'){
             steps{
-                sh './mvnw clean package -pl config-server'
+                sh './mvnw clean package -pl mp'
             }
         }
         stage('build'){
