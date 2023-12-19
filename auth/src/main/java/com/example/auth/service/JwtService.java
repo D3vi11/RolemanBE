@@ -1,6 +1,8 @@
 package com.example.auth.service;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyGenerator;
@@ -10,18 +12,9 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    private final SecretKey secretKey;
+    private final SecretKey secretKey = Jwts.SIG.HS512.key().build();
 
-    public JwtService(){
-        try{
-            KeyGenerator generator = KeyGenerator.getInstance("HmacSha512");
-            this.secretKey = generator.generateKey();
-        }catch (NoSuchAlgorithmException e){
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    public String generateToken(String username){
+    public String generateToken(String username) {
         long time = System.currentTimeMillis();
         long expiration = time + 100_000_000_000_000l;
         return Jwts.builder()
@@ -35,9 +28,9 @@ public class JwtService {
     public boolean validateToken(String token){
         token = token.split(" ")[1];
         try {
-            Jwts.parser().decryptWith(secretKey).build().parseSignedClaims(token);
+            Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
             return true;
-        }catch (Exception e){
+        }catch (JwtException e){
             return false;
         }
 
