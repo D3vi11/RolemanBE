@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 8888:8888 -v /app/keys:/app/keys --network RolemanNetwork --name config config'
+                sh 'docker run -d -p 8888:8888 -v ~/app/keys:/app/keys --network RolemanNetwork --name config config'
             }
         }
     }
