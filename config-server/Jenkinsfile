@@ -22,7 +22,7 @@ pipeline{
             steps{
                 script{
                     def container="config-server"
-                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${containerName}", returnStatus: true) == 0
+                    def exists = sh(script: "docker ps -a --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
                     if(exists){
                         docker rm config-server
                     }
