@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t config-server ./config-server'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="config-server"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                         docker stop config-server
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="config-server"

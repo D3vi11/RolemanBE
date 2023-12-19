@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t generator ./gen'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="generator"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker stop generator
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="generator"

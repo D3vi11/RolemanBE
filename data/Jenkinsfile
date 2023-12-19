@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t data ./data'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="data"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker stop data
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="data"

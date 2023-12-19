@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t weather ./wth'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="weather"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker stop weather
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="weather"

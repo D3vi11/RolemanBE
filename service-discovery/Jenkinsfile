@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t eureka ./service-discovery'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="eureka"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker stop eureka
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="eureka"

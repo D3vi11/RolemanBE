@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t calendar ./cal'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="calendar"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker stop calendar
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="calendar"

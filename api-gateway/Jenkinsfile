@@ -18,7 +18,18 @@ pipeline{
                 sh 'docker build -t gateway ./api-gateway'
             }
         }
-        stage('remove existing container'){
+        stage('stop container'){
+            steps{
+                script{
+                    def container="gateway"
+                    def exists = sh(script: "docker ps --format '{{.Names}}' | grep -w ${container}", returnStatus: true) == 0
+                    if(exists){
+                        docker stop gateway
+                    }
+                }
+            }
+        }
+        stage('remove container'){
             steps{
                 script{
                     def container="gateway"
