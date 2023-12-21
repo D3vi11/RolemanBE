@@ -1,17 +1,19 @@
-package com.example.apigateway;
+package com.example.apigateway.config;
 
+import com.example.apigateway.filter.AuthorizationFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class GatewayConfiguration {
+public class GatewayConfig {
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder, AuthorizationFilter authorizationFilter) {
         return builder.routes()
                 .route("character", r -> r.path("/character/**")
-                        .filters(f->f.rewritePath("/character","/"))
+                        .filters(f->f.rewritePath("/character","/")
+                                .filter(authorizationFilter))
                         .uri("lb://character"))
                 .route("campaign", r -> r.path("/campaign/**")
                         .filters(f->f.rewritePath("/campaign","/"))
