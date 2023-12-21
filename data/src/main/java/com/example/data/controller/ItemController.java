@@ -17,19 +17,11 @@ public class ItemController {
 
     ItemService itemService;
 
-    @GetMapping("/")
-    public ResponseEntity<String> findItems(@RequestParam String name){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status",HttpStatus.OK);
-        jsonObject.put("items", itemService.findItemsByName(name));
-        return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
-    }
-
     @PostMapping("/")
     public ResponseEntity<String> postItems(@RequestBody List<ItemDto> list){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemService.saveAllItems(list);
+        itemService.saveAll(list);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
 
@@ -37,7 +29,7 @@ public class ItemController {
     public ResponseEntity<String> findItem(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        jsonObject.put("item", itemService.findItemByName(name));
+        jsonObject.put("item", itemService.findByName(name));
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
@@ -45,14 +37,14 @@ public class ItemController {
     public ResponseEntity<String> postItem(@RequestBody ItemDto itemDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemService.saveItem(itemDto);
+        itemService.save(itemDto);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
     @PutMapping("/item")
     public ResponseEntity<String> putItem(@RequestBody ItemDto itemDto, @RequestBody ItemDto newItem){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemService.changeItem(itemDto,newItem);
+        itemService.change(itemDto,newItem);
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
@@ -60,7 +52,7 @@ public class ItemController {
     public ResponseEntity<String> deleteItem(@RequestBody String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemService.deleteItem(name);
+        itemService.delete(name);
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 }

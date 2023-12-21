@@ -18,16 +18,7 @@ import java.util.List;
 public class ItemService {
     ItemRepository itemRepository;
 
-    public List<Item> findItemsByName(String name) {
-        List<Item> items = itemRepository.findItemsByName(name);
-        if (items.isEmpty()) {
-            throw new NothingFoundException("Nie znaleziono żadnego przedmiotu");
-        }
-
-        return items;
-    }
-
-    public void saveAllItems(List<ItemDto> list) {
+    public void saveAll(List<ItemDto> list) {
         try {
             itemRepository.saveAll(mapAll(list));
         } catch (MongoException e) {
@@ -35,12 +26,12 @@ public class ItemService {
         }
     }
 
-    public Item findItemByName(String name) {
-        return itemRepository.findItemByName(name)
+    public Item findByName(String name) {
+        return itemRepository.findByName(name)
                 .orElseThrow(() -> new NothingFoundException("Nie znaleziono przedmiotu"));
     }
 
-    public void saveItem(ItemDto itemDto) {
+    public void save(ItemDto itemDto) {
         try {
             itemRepository.save(mapToItem(itemDto));
         } catch (MongoException e) {
@@ -48,8 +39,8 @@ public class ItemService {
         }
     }
 
-    public void changeItem(ItemDto itemDto,ItemDto newItemDto){
-        Item item = itemRepository.findItemByName(itemDto.getName())
+    public void change(ItemDto itemDto,ItemDto newItemDto){
+        Item item = itemRepository.findByName(itemDto.getName())
                 .orElseThrow(() -> new NothingFoundException("Nie znaleziono przedmiotu do zmiany"));
         item.setName(newItemDto.getName());
         item.setRequirements(newItemDto.getRequirements());
@@ -61,8 +52,8 @@ public class ItemService {
         }
     }
 
-    public void deleteItem(String name){
-        Item item = itemRepository.findItemByName(name)
+    public void delete(String name){
+        Item item = itemRepository.findByName(name)
                 .orElseThrow(()->new NothingFoundException("Brak przedmiotu do usunięcia"));
         try {
             itemRepository.delete(item);
@@ -76,10 +67,8 @@ public class ItemService {
     }
 
     private List<Item> mapAll(List<ItemDto> itemDtoList) {
-        List<Item> list = new ArrayList<>();
-        for (ItemDto itemDto : itemDtoList) {
-            list.add(mapToItem(itemDto));
-        }
-        return list;
+        return itemDtoList.stream()
+                .map(this::mapToItem)
+                .toList();
     }
 }
