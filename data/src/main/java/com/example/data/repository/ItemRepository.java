@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ItemsRepository extends MongoRepository<Item,String> {
+public interface ItemRepository extends MongoRepository<Item,String> {
     List<Item> findItemsByName(String name);
     Optional<Item> findItemByName(String name);
 }

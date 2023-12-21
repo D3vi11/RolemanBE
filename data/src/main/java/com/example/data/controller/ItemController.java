@@ -1,7 +1,7 @@
 package com.example.data.controller;
 
 import com.example.data.dto.ItemDto;
-import com.example.data.service.ItemsService;
+import com.example.data.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -13,15 +13,15 @@ import java.util.List;
 @RestController
 @RequestMapping("items")
 @AllArgsConstructor
-public class ItemsController {
+public class ItemController {
 
-    ItemsService itemsService;
+    ItemService itemService;
 
     @GetMapping("/")
     public ResponseEntity<String> findItems(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        jsonObject.put("items",itemsService.findItemsByName(name));
+        jsonObject.put("items", itemService.findItemsByName(name));
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
@@ -29,7 +29,7 @@ public class ItemsController {
     public ResponseEntity<String> postItems(@RequestBody List<ItemDto> list){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemsService.saveAllItems(list);
+        itemService.saveAllItems(list);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
 
@@ -37,7 +37,7 @@ public class ItemsController {
     public ResponseEntity<String> findItem(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        jsonObject.put("item",itemsService.findItemByName(name));
+        jsonObject.put("item", itemService.findItemByName(name));
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
@@ -45,14 +45,14 @@ public class ItemsController {
     public ResponseEntity<String> postItem(@RequestBody ItemDto itemDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemsService.saveItem(itemDto);
+        itemService.saveItem(itemDto);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
     @PutMapping("/item")
     public ResponseEntity<String> putItem(@RequestBody ItemDto itemDto, @RequestBody ItemDto newItem){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemsService.changeItem(itemDto,newItem);
+        itemService.changeItem(itemDto,newItem);
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
@@ -60,7 +60,7 @@ public class ItemsController {
     public ResponseEntity<String> deleteItem(@RequestBody String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        itemsService.deleteItem(name);
+        itemService.deleteItem(name);
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 }

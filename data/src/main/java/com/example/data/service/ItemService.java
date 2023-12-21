@@ -5,7 +5,7 @@ import com.example.data.entity.Item;
 import com.example.data.exception.FailedToDeleteException;
 import com.example.data.exception.FailedToSaveException;
 import com.example.data.exception.NothingFoundException;
-import com.example.data.repository.ItemsRepository;
+import com.example.data.repository.ItemRepository;
 import com.mongodb.MongoException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ItemsService {
-    ItemsRepository itemRepository;
+public class ItemService {
+    ItemRepository itemRepository;
 
     public List<Item> findItemsByName(String name) {
         List<Item> items = itemRepository.findItemsByName(name);

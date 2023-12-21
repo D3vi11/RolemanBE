@@ -1,4 +1,4 @@
 package com.example.data.controller;
 
-public class RulesController {
+public class SpellController {
 }
