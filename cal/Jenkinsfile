@@ -47,20 +47,17 @@ pipeline{
         }
     }
     post {
-            success {
-                discordSend title: "Calendar", description: "Build Success",link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
-            }
-
-            failure {
-                discordSend title: "Calendar", description: "Build Failed", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
-            }
-
-            unstable {
-                discordSend title: "Calendar", description: "Build Unstable", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
-            }
-
-            aborted {
-                discordSend title: "Calendar", description: "Build Aborted", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
-            }
+        success {
+            discordSend title: "Calendar", description: "Build Success",link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
         }
+        failure {
+            discordSend title: "Calendar", description: "Build Failed", link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+        unstable {
+            discordSend title: "Calendar", description: "Build Unstable", link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+        aborted {
+            discordSend title: "Calendar", description: "Build Aborted", link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+    }
 }

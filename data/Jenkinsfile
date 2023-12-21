@@ -46,4 +46,18 @@ pipeline{
             }
         }
     }
+    post {
+        success {
+            discordSend title: "Data", description: "Build Success",link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+        failure {
+            discordSend title: "Data", description: "Build Failed", link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+        unstable {
+            discordSend title: "Data", description: "Build Unstable", link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+        aborted {
+            discordSend title: "Data", description: "Build Aborted", link: env.BUILD_URL ,result: currentBuild.currentResult, webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+        }
+    }
 }
