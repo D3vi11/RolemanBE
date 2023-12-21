@@ -66,8 +66,8 @@ public class SpellService {
         return new Spell(spellDto.getName(),spellDto.getDescription());
     }
 
-    private List<Spell> mapAll(List<SpellDto> spellDtoList) {
-        return spellDtoList.stream()
+    private List<Spell> mapAll(List<SpellDto> list) {
+        return list.stream()
                 .map(this::mapToSpell)
                 .toList();
     }

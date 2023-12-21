@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @AllArgsConstructor
-@RestController("spells")
+@RestController
+@RequestMapping("spells")
 public class SpellController {
     SpellService spellService;
     @GetMapping("/")
@@ -31,7 +32,7 @@ public class SpellController {
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
 
-    @GetMapping("/item")
+    @GetMapping("/spell")
     public ResponseEntity<String> findItem(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
@@ -39,14 +40,14 @@ public class SpellController {
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
-    @PostMapping("/item")
+    @PostMapping("/spell")
     public ResponseEntity<String> postItem(@RequestBody SpellDto spellDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         spellService.save(spellDto);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
-    @PutMapping("/item")
+    @PutMapping("/spell")
     public ResponseEntity<String> putItem(@RequestBody SpellDto spellDto, @RequestBody SpellDto newSpell){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
@@ -54,7 +55,7 @@ public class SpellController {
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/spell")
     public ResponseEntity<String> deleteItem(@RequestBody String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);

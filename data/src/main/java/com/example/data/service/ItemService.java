@@ -66,8 +66,8 @@ public class ItemService {
         return new Item(itemDto.getName(), itemDto.getRequirements(), itemDto.getDescription());
     }
 
-    private List<Item> mapAll(List<ItemDto> itemDtoList) {
-        return itemDtoList.stream()
+    private List<Item> mapAll(List<ItemDto> list) {
+        return list.stream()
                 .map(this::mapToItem)
                 .toList();
     }
