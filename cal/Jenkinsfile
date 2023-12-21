@@ -46,4 +46,21 @@ pipeline{
             }
         }
     }
+    post {
+            success {
+                discordSend description: "Build Success :white_check_mark:", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+            }
+
+            failure {
+                discordSend description: "Build Failed :x:", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+            }
+
+            unstable {
+                discordSend description: "Build Unstable :warning:", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+            }
+
+            aborted {
+                discordSend description: "Build Aborted :no_entry:", webhookURL: 'https://discord.com/api/webhooks/1187413665746518136/R4NzybodNzGU0aXUxmGbSfRqwD5ZLkKI7xsfHdIjbDBliPmRO9lMFafHqQdP6rzYHatF'
+            }
+        }
 }
