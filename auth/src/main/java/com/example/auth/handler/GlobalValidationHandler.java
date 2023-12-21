@@ -1,5 +1,6 @@
 package com.example.auth.handler;
 
+import org.json.JSONObject;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class GlobalValidationHandler {
         String errorMessage = e.getBindingResult().getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("\n"));
-        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status",HttpStatus.BAD_REQUEST);
+        jsonObject.put("error",errorMessage);
+        return new ResponseEntity<>(jsonObject.toString(), HttpStatus.BAD_REQUEST);
     }
 }
