@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Document
-public class Items {
+public class Item {
 
     @Id
     private String id;
