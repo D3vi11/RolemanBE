@@ -16,7 +16,7 @@ import java.util.List;
 public class CharacterController {
     CharacterService characterService;
     @PostMapping("/")
-    public ResponseEntity<String> postItems(@RequestBody List<CharacterDto> list){
+    public ResponseEntity<String> postCharacters(@RequestBody List<CharacterDto> list){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", HttpStatus.OK);
         characterService.saveAll(list);
@@ -24,7 +24,7 @@ public class CharacterController {
     }
 
     @GetMapping("/character")
-    public ResponseEntity<String> findItem(@RequestParam String name){
+    public ResponseEntity<String> findCharacter(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         jsonObject.put("item", characterService.findByName(name));
@@ -32,14 +32,14 @@ public class CharacterController {
     }
 
     @PostMapping("/character")
-    public ResponseEntity<String> postItem(@RequestBody CharacterDto characterDto){
+    public ResponseEntity<String> postCharacter(@RequestBody CharacterDto characterDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         characterService.save(characterDto);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
     @PutMapping("/character")
-    public ResponseEntity<String> putItem(@RequestBody CharacterDto characterDto, @RequestBody CharacterDto newCharacterDto){
+    public ResponseEntity<String> putCharacter(@RequestBody CharacterDto characterDto, @RequestBody CharacterDto newCharacterDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         characterService.change(characterDto,newCharacterDto);
@@ -47,7 +47,7 @@ public class CharacterController {
     }
 
     @DeleteMapping("/character")
-    public ResponseEntity<String> deleteItem(@RequestBody String name){
+    public ResponseEntity<String> deleteCharacter(@RequestBody String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         characterService.delete(name);

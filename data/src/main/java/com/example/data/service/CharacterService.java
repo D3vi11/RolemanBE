@@ -2,7 +2,6 @@ package com.example.data.service;
 
 import com.example.data.dto.CharacterDto;
 import com.example.data.entity.Character;
-import com.example.data.entity.Item;
 import com.example.data.exception.FailedToDeleteException;
 import com.example.data.exception.FailedToSaveException;
 import com.example.data.exception.NothingFoundException;
@@ -51,11 +50,11 @@ public class CharacterService {
 
     public void delete(String name){
         Character character = characterRepository.findByName(name)
-                .orElseThrow(()->new NothingFoundException("Brak przedmiotu do usunięcia"));
+                .orElseThrow(()->new NothingFoundException("Brak postaci do usunięcia"));
         try {
             characterRepository.delete(character);
         }catch (MongoException e){
-            throw new FailedToDeleteException("Błąd podczas usuwania przedmiotu");
+            throw new FailedToDeleteException("Błąd podczas usuwania postaci");
         }
     }
 

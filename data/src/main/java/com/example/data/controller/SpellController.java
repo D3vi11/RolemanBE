@@ -17,7 +17,7 @@ import java.util.List;
 public class SpellController {
     SpellService spellService;
     @GetMapping("/")
-    public ResponseEntity<String> findItems(@RequestParam String name){
+    public ResponseEntity<String> findSpells(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", HttpStatus.OK);
         jsonObject.put("items", spellService.findByName(name));
@@ -25,7 +25,7 @@ public class SpellController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> postItems(@RequestBody List<SpellDto> list){
+    public ResponseEntity<String> postSpells(@RequestBody List<SpellDto> list){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         spellService.saveAll(list);
@@ -33,7 +33,7 @@ public class SpellController {
     }
 
     @GetMapping("/spell")
-    public ResponseEntity<String> findItem(@RequestParam String name){
+    public ResponseEntity<String> findSpell(@RequestParam String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         jsonObject.put("item", spellService.findByName(name));
@@ -41,14 +41,14 @@ public class SpellController {
     }
 
     @PostMapping("/spell")
-    public ResponseEntity<String> postItem(@RequestBody SpellDto spellDto){
+    public ResponseEntity<String> postSpell(@RequestBody SpellDto spellDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         spellService.save(spellDto);
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
     @PutMapping("/spell")
-    public ResponseEntity<String> putItem(@RequestBody SpellDto spellDto, @RequestBody SpellDto newSpell){
+    public ResponseEntity<String> putSpell(@RequestBody SpellDto spellDto, @RequestBody SpellDto newSpell){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         spellService.change(spellDto,newSpell);
@@ -56,7 +56,7 @@ public class SpellController {
     }
 
     @DeleteMapping("/spell")
-    public ResponseEntity<String> deleteItem(@RequestBody String name){
+    public ResponseEntity<String> deleteSpell(@RequestBody String name){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
         spellService.delete(name);
