@@ -16,13 +16,6 @@ import java.util.List;
 @RequestMapping("spells")
 public class SpellController {
     SpellService spellService;
-    @GetMapping("/")
-    public ResponseEntity<String> findSpells(@RequestParam String name){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", HttpStatus.OK);
-        jsonObject.put("items", spellService.findByName(name));
-        return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
-    }
 
     @PostMapping("/")
     public ResponseEntity<String> postSpells(@RequestBody List<SpellDto> list){
