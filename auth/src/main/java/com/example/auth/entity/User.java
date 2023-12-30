@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Entity(name = "USER")
-@Table(name = "USER")
+@Table(name = "USERS")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Data
