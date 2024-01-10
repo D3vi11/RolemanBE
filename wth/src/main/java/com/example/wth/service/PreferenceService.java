@@ -15,8 +15,16 @@ public class PreferenceService {
 
     public void setPreference(PreferenceDto preferenceDto){
         Preference preference = preferenceRepository.findByCampaignId(preferenceDto.getCampaignId())
-                .orElseThrow(CampaignNotFoundException::new);
+                .orElseThrow(()-> new CampaignNotFoundException("Nie znaleziono kampanii"));
         preference.setIsExternal(preferenceDto.getIsExternal());
         preferenceRepository.save(preference);
+    }
+
+    public void createPreference(PreferenceDto preferenceDto){
+        preferenceRepository.save(mapToPreference(preferenceDto));
+    }
+
+    private Preference mapToPreference(PreferenceDto preferenceDto){
+        return new Preference(preferenceDto.getCampaignId(),preferenceDto.getIsExternal());
     }
 }
