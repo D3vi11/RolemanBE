@@ -30,9 +30,10 @@ public class WeatherController {
 
     @GetMapping("weather")
     public ResponseEntity<String> getWeather(@RequestParam Integer campaignId){
-        weatherService.getWeather(campaignId);
+        String weather = weatherService.getWeather(campaignId);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
+        jsonObject.put("weather",weather);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(jsonObject.toString());
