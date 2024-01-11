@@ -42,7 +42,7 @@ pipeline{
         }
         stage('start new container'){
             steps{
-                sh 'docker run -d -p 80:80 --network RolemanNetwork --name gateway gateway'
+                sh 'docker run -d -p 8080:8080 --network RolemanNetwork --name gateway gateway'
             }
         }
     }
