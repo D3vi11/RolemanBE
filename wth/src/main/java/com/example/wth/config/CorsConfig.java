@@ -1,4 +1,4 @@
-package com.example.wth;
+package com.example.wth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
