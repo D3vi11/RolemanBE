@@ -26,7 +26,6 @@ import java.util.Map;
 public class WeatherController {
 
     private final WeatherService weatherService;
-    private final RestTemplate restTemplate;
 
     @GetMapping("weather")
     public ResponseEntity<String> getWeather(@RequestParam Integer campaignId){
