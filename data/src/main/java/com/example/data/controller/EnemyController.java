@@ -1,11 +1,12 @@
 package com.example.data.controller;
 
-import com.example.data.dto.CharacterDto;
 import com.example.data.dto.EnemyDto;
-import com.example.data.service.CharacterService;
+import com.example.data.entity.Enemy;
+import com.example.data.enums.Rarity;
 import com.example.data.service.EnemyService;
 import lombok.AllArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,14 @@ public class EnemyController {
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 
+    @GetMapping("/enemies")
+    public ResponseEntity<List<EnemyDto>> findEnemiesByRarityAndCr(@RequestParam Rarity rarity, Integer cr, Integer limit){
+        List<EnemyDto> allByRarityAndCr = enemyService.findAllByRarityAndCr(rarity, cr, limit);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(allByRarityAndCr);
+    }
+
     @PostMapping("/enemy")
     public ResponseEntity<String> postEnemy(@RequestBody EnemyDto enemyDto){
         JSONObject jsonObject = new JSONObject();
@@ -41,10 +50,10 @@ public class EnemyController {
         return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
     }
     @PutMapping("/enemy")
-    public ResponseEntity<String> putEnemy(@RequestBody EnemyDto enemyDto, @RequestBody EnemyDto newEnemyDto){
+    public ResponseEntity<String> putEnemy(@RequestParam String name, @RequestBody EnemyDto newEnemyDto){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",HttpStatus.OK);
-        enemyService.change(enemyDto,newEnemyDto);
+        enemyService.change(name,newEnemyDto);
         return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
     }
 

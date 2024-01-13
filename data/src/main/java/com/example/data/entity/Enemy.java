@@ -1,5 +1,7 @@
 package com.example.data.entity;
 
+import com.example.data.CharacterSheet;
+import com.example.data.enums.Rarity;
 import lombok.Data;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
@@ -13,5 +15,13 @@ public class Enemy {
     @NonNull
     String name;
     @NonNull
+    String image;
+    @NonNull
+    Rarity rarity;
+    @NonNull
+    Integer cr;
+    @NonNull
     String description;
+    @NonNull
+    CharacterSheet characterSheet;
 }
