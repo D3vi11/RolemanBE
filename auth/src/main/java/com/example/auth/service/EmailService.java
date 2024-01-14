@@ -16,7 +16,7 @@ public class EmailService {
     private String appAddress;
 
     public void sendEmail(String email, String token){
-        String confirmationUrl = appAddress+"/confirm?token="+token;
+        String confirmationUrl = appAddress+"/authorization/confirm?token="+token;
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
