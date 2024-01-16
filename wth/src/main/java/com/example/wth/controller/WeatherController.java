@@ -27,7 +27,7 @@ public class WeatherController {
 
     private final WeatherService weatherService;
 
-    @GetMapping("weather")
+    @GetMapping("wth")
     public ResponseEntity<String> getWeather(@RequestParam Integer campaignId){
         String weather = weatherService.getWeather(campaignId);
         JSONObject jsonObject = new JSONObject();
