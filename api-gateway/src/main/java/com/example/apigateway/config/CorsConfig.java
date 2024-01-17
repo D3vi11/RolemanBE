@@ -7,6 +7,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.server.WebFilter;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import java.util.Arrays;
@@ -30,11 +31,10 @@ public class CorsConfig implements WebFluxConfigurer {
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry){
+    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("*")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedHeaders("*");
     }
 }
