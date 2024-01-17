@@ -5,13 +5,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.reactive.config.CorsRegistry;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.util.pattern.PathPatternParser;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-public class CorsConfig {
+public class CorsConfig implements WebFluxConfigurer {
 
     @Bean
     public CorsWebFilter corsWebFilter() {
@@ -25,5 +27,14 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", corsConfig);
 
         return new CorsWebFilter(source);
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
