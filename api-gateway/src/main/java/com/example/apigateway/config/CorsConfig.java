@@ -14,13 +14,13 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-public class CorsConfig implements WebFluxConfigurer {
+public class CorsConfig {
 
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(Collections.singletonList("*"));
-        corsConfig.setMaxAge(8000L);
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost","http://143.198.111.58"));
+        corsConfig.setMaxAge(1L);
         corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(Arrays.asList("*"));
 
@@ -28,13 +28,5 @@ public class CorsConfig implements WebFluxConfigurer {
         source.registerCorsConfiguration("/**", corsConfig);
 
         return new CorsWebFilter(source);
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*")
-                .allowedHeaders("*");
     }
 }
