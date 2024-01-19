@@ -6,7 +6,7 @@ import lombok.NonNull;
 @Data
 public class PreferenceDto {
     @NonNull
-    private Integer campaignId;
+    private String campaignId;
     @NonNull
     private Boolean isExternal;
 }

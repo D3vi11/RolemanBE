@@ -11,7 +11,7 @@ public class Preference {
     @Id
     private String id;
     @NonNull
-    private Integer campaignId;
+    private String campaignId;
     @NonNull
     private Boolean isExternal;
 }

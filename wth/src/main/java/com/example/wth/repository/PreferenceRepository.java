@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PreferenceRepository extends MongoRepository<Preference,String> {
-    Optional<Preference> findByCampaignId(Integer campaignId);
+    Optional<Preference> findByCampaignId(String campaignId);
+    void deleteByCampaignId(String campaignId);
 }

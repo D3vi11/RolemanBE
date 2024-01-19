@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface WeatherRepository extends MongoRepository<Weather,String> {
-   Optional<Weather> findByCampaignId(Integer campaignId);
+   Optional<Weather> findByCampaignId(String campaignId);
+   void deleteByCampaignId(String campaignId);
 }
