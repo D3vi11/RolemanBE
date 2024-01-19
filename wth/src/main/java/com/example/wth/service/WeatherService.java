@@ -1,14 +1,15 @@
 package com.example.wth.service;
 
+import com.example.wth.dto.WeatherDto;
+import com.example.wth.dto.WeatherSetDto;
 import com.example.wth.entity.Preference;
 import com.example.wth.entity.Weather;
-import com.example.wth.exception.CampaignNotFoundException;
-import com.example.wth.exception.WeatherNotFoundException;
+import com.example.wth.exception.*;
 import com.example.wth.repository.PreferenceRepository;
 import com.example.wth.repository.WeatherRepository;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.AllArgsConstructor;
+import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +29,16 @@ public class WeatherService {
     private final PreferenceRepository preferenceRepository;
     private final RestTemplate restTemplate;
 
-    public String getWeather(Integer campaignId){
+    public String getWeather(String campaignId){
         Preference preference = preferenceRepository.findByCampaignId(campaignId)
-                .orElseThrow(() -> new CampaignNotFoundException("Nie znaleziono kampanii"));
+                .orElseThrow(() -> new PreferenceNotFoundException("Nie znaleziono preferencji dla tej kampanii"));
 
         if(preference.getIsExternal()){
             return getExternalWeather();
         }else {
             Random random = new Random();
             Weather weather = weatherRepository.findByCampaignId(campaignId)
-                    .orElseThrow(() -> new CampaignNotFoundException("Nie znaleziono Kampanii"));
+                    .orElseThrow(() -> new WeatherNotFoundException("Nie znaleziono danych pogodowych dla tej kampanii"));
             List<String> list = weather.getWeatherList()
                     .stream()
                     .sorted((a, b) -> random.nextInt(3) - 1)
@@ -47,6 +48,35 @@ public class WeatherService {
                 throw new WeatherNotFoundException("Brak pogody w bazie danych");
             }
             return list.get(0);
+        }
+    }
+
+    public void createWeather(WeatherSetDto weatherSetDto){
+        if(weatherRepository.findByCampaignId(weatherSetDto.getCampaignId()).isPresent()){
+            throw new WeatherExistsException("Pogoda dla kampanii o podanym id już istnieje");
+        }
+        weatherRepository.save(mapToWeather(weatherSetDto));
+    }
+
+    public void modifyWeather(String campaignId,WeatherSetDto weatherSetDto){
+        if(!campaignId.equals(weatherSetDto.getCampaignId())){
+            throw new IdDoesntMatchException("Id kampanii są różne");
+        }
+        Weather weather = weatherRepository.findByCampaignId(campaignId)
+                .orElseThrow(() -> new WeatherExistsException("Dane pogodowe dla tej kampanii nie istnieją"));
+        weather.setWeatherList(weatherSetDto.getWeatherList());
+        try{
+            weatherRepository.save(weather);
+        }catch (MongoException e){
+            throw new UnableToSaveException("Błąd podczas zapisu");
+        }
+    }
+
+    public void deleteWeather(String campaignId){
+        try{
+            weatherRepository.deleteByCampaignId(campaignId);
+        }catch (MongoException e){
+            throw new UnableToDeleteException("Błąd podczas usuwania danych pogodowych");
         }
     }
 
@@ -60,5 +90,9 @@ public class WeatherService {
                 .getAsJsonObject()
                 .get("weather_descriptions")
                 .getAsString();
+    }
+
+    private Weather mapToWeather(WeatherSetDto weatherSetDto){
+        return new Weather(weatherSetDto.getCampaignId(),weatherSetDto.getWeatherList());
     }
 }

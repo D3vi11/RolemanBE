@@ -3,10 +3,12 @@ package com.example.wth.dto;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.util.List;
+
 @Data
-public class WeatherDto {
+public class WeatherSetDto {
     @NonNull
     private String campaignId;
     @NonNull
-    private String currentWeather;
+    private List<String> weatherList;
 }

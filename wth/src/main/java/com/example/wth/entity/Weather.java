@@ -13,6 +13,7 @@ public class Weather {
     @Id
     private String id;
     @NonNull
-    private Integer campaignId;
+    private String campaignId;
+    @NonNull
     private List<String> weatherList;
 }
