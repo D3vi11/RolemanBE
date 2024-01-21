@@ -9,14 +9,15 @@ import com.example.data.exception.NothingFoundException;
 import com.example.data.repository.EnemyRepository;
 import com.mongodb.MongoException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EnemyService {
-    EnemyRepository enemyRepository;
+    private final EnemyRepository enemyRepository;
 
     public void saveAll(List<EnemyDto> list) {
         try {
@@ -26,12 +27,13 @@ public class EnemyService {
         }
     }
 
-    public Enemy findByName(String name) {
-        return enemyRepository.findByName(name)
+    public EnemyDto findByName(String name) {
+        Enemy enemy = enemyRepository.findByName(name)
                 .orElseThrow(() -> new NothingFoundException("Nie znaleziono przeciwnika"));
+        return mapToDto(enemy);
     }
 
-    public List<EnemyDto> findAllByRarityAndCr(Rarity rarity, Integer cr, Integer limit){
+    public List<EnemyDto> findAllByRarityAndCr(Rarity rarity, Integer cr, Integer limit) {
         return mapAlltoDto(enemyRepository.findAllByRarityAndCr(rarity, cr))
                 .stream()
                 .limit(limit)
@@ -73,10 +75,11 @@ public class EnemyService {
     }
 
     private Enemy mapToEnemy(EnemyDto enemyDto) {
-        return new Enemy(enemyDto.getName(), enemyDto.getImage(), enemyDto.getRarity(), enemyDto.getCr(), enemyDto.getDescription(), enemyDto.getCharacterSheet());
+        return new Enemy(enemyDto.getName(), enemyDto.getImage(), enemyDto.getRarity(), enemyDto.getCr(), enemyDto.getXp(), enemyDto.getDescription(), enemyDto.getCharacterSheet());
     }
-    private EnemyDto mapToDto(Enemy enemy){
-        return new EnemyDto(enemy.getName(), enemy.getImage(),enemy.getRarity(),enemy.getCr(),enemy.getDescription(),enemy.getCharacterSheet());
+
+    private EnemyDto mapToDto(Enemy enemy) {
+        return new EnemyDto(enemy.getName(), enemy.getImage(), enemy.getRarity(), enemy.getCr(), enemy.getXp(), enemy.getDescription(), enemy.getCharacterSheet());
     }
 
     private List<EnemyDto> mapAlltoDto(List<Enemy> list) {

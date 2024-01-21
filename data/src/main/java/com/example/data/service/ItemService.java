@@ -8,15 +8,16 @@ import com.example.data.exception.NothingFoundException;
 import com.example.data.repository.ItemRepository;
 import com.mongodb.MongoException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemService {
-    ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     public void saveAll(List<ItemDto> list) {
         try {
@@ -26,9 +27,10 @@ public class ItemService {
         }
     }
 
-    public Item findByName(String name) {
-        return itemRepository.findByName(name)
+    public ItemDto findByName(String name) {
+        Item item = itemRepository.findByName(name)
                 .orElseThrow(() -> new NothingFoundException("Nie znaleziono przedmiotu"));
+        return mapToDto(item);
     }
 
     public void save(ItemDto itemDto) {
@@ -64,6 +66,9 @@ public class ItemService {
 
     private Item mapToItem(ItemDto itemDto) {
         return new Item(itemDto.getName(), itemDto.getRequirements(), itemDto.getDescription());
+    }
+    private ItemDto mapToDto(Item item){
+        return new ItemDto(item.getName(),item.getRequirements(),item.getDescription());
     }
 
     private List<Item> mapAll(List<ItemDto> list) {

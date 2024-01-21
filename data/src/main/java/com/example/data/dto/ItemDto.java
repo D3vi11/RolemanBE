@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ItemDto {
-    private String name;
-    private String requirements;
-    private String description;
+    private final String name;
+    private final String requirements;
+    private final String description;
 }

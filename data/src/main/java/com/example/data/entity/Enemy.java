@@ -11,17 +11,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 public class Enemy {
     @Id
-    String id;
+    private String id;
     @NonNull
-    String name;
+    private String name;
     @NonNull
-    String image;
+    private String image;
     @NonNull
-    Rarity rarity;
+    private Rarity rarity;
     @NonNull
-    Integer cr;
+    private Integer cr;
     @NonNull
-    String description;
+    private Integer xp;
     @NonNull
-    CharacterSheet characterSheet;
+    private String description;
+    @NonNull
+    private CharacterSheet characterSheet;
 }

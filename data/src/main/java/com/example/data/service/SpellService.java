@@ -10,14 +10,15 @@ import com.example.data.exception.NothingFoundException;
 import com.example.data.repository.SpellRepository;
 import com.mongodb.MongoException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SpellService {
-    SpellRepository spellRepository;
+    private final SpellRepository spellRepository;
 
     public void saveAll(List<SpellDto> list) {
         try {
@@ -27,9 +28,10 @@ public class SpellService {
         }
     }
 
-    public Spell findByName(String name) {
-        return spellRepository.findByName(name)
+    public SpellDto findByName(String name) {
+        Spell spell = spellRepository.findByName(name)
                 .orElseThrow(() -> new NothingFoundException("Nie znaleziono zaklęcia"));
+        return mapToDto(spell);
     }
 
     public void save(SpellDto spellDto) {
@@ -64,6 +66,9 @@ public class SpellService {
 
     private Spell mapToSpell(SpellDto spellDto){
         return new Spell(spellDto.getName(),spellDto.getDescription());
+    }
+    private SpellDto mapToDto(Spell spell){
+        return new SpellDto(spell.getName(),spell.getDescription());
     }
 
     private List<Spell> mapAll(List<SpellDto> list) {
