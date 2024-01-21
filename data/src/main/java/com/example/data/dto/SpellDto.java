@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SpellDto {
-    String name;
-    String description;
+    private final String name;
+    private final String description;
 }

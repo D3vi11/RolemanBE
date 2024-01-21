@@ -1,10 +1,12 @@
 package com.example.data.controller;
 
+import com.example.data.ResponseObject;
 import com.example.data.dto.EnemyDto;
 import com.example.data.entity.Enemy;
 import com.example.data.enums.Rarity;
 import com.example.data.service.EnemyService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.HttpStatus;
@@ -14,24 +16,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("enemies")
 public class EnemyController {
-    EnemyService enemyService;
+    private final EnemyService enemyService;
     @PostMapping("/")
-    public ResponseEntity<String> postEnemies(@RequestBody List<EnemyDto> list){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", HttpStatus.OK);
+    public ResponseEntity<ResponseObject> postEnemies(@RequestBody List<EnemyDto> list){
         enemyService.saveAll(list);
-        return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseObject(HttpStatus.CREATED));
     }
 
     @GetMapping("/enemy")
-    public ResponseEntity<String> findEnemy(@RequestParam String name){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status",HttpStatus.OK);
-        jsonObject.put("item", enemyService.findByName(name));
-        return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
+    public ResponseEntity<EnemyDto> findEnemy(@RequestParam String name){
+        EnemyDto enemyDto = enemyService.findByName(name);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(enemyDto);
     }
 
     @GetMapping("/enemies")
@@ -43,25 +45,25 @@ public class EnemyController {
     }
 
     @PostMapping("/enemy")
-    public ResponseEntity<String> postEnemy(@RequestBody EnemyDto enemyDto){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status",HttpStatus.OK);
+    public ResponseEntity<ResponseObject> postEnemy(@RequestBody EnemyDto enemyDto){
         enemyService.save(enemyDto);
-        return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseObject(HttpStatus.CREATED));
     }
     @PutMapping("/enemy")
-    public ResponseEntity<String> putEnemy(@RequestParam String name, @RequestBody EnemyDto newEnemyDto){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status",HttpStatus.OK);
+    public ResponseEntity<ResponseObject> putEnemy(@RequestParam String name, @RequestBody EnemyDto newEnemyDto){
         enemyService.change(name,newEnemyDto);
-        return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseObject(HttpStatus.OK));
     }
 
     @DeleteMapping("/enemy")
-    public ResponseEntity<String> deleteEnemy(@RequestBody String name){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status",HttpStatus.OK);
+    public ResponseEntity<ResponseObject> deleteEnemy(@RequestBody String name){
         enemyService.delete(name);
-        return new ResponseEntity<>(jsonObject.toString(),HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseObject(HttpStatus.OK));
     }
 }

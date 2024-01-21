@@ -8,14 +8,15 @@ import com.example.data.exception.NothingFoundException;
 import com.example.data.repository.RuleRepository;
 import com.mongodb.MongoException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RuleService {
-    RuleRepository ruleRepository;
+    private final RuleRepository ruleRepository;
 
     public void saveAll(List<RuleDto> list) {
         try {
@@ -25,9 +26,10 @@ public class RuleService {
         }
     }
 
-    public Rule findByName(String name) {
-        return ruleRepository.findByName(name)
+    public RuleDto findByName(String name) {
+        Rule rule = ruleRepository.findByName(name)
                 .orElseThrow(() -> new NothingFoundException("Nie znaleziono zasady"));
+        return mapToDto(rule);
     }
 
     public void save(RuleDto ruleDto) {
@@ -62,6 +64,9 @@ public class RuleService {
 
     private Rule mapToRule(RuleDto ruleDto) {
         return new Rule(ruleDto.getName(), ruleDto.getDescription());
+    }
+    private RuleDto mapToDto(Rule rule){
+        return new RuleDto(rule.getName(),rule.getDescription());
     }
 
     private List<Rule> mapAll(List<RuleDto> list) {
