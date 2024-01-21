@@ -2,16 +2,14 @@ package com.example.cp.service;
 
 import com.example.cp.dto.CampaignDto;
 import com.example.cp.entity.Campaign;
-import com.example.cp.exception.CampaignNotFoundException;
-import com.example.cp.exception.UnableToDeleteCampaign;
-import com.example.cp.exception.UnableToSaveCampaignException;
-import com.example.cp.exception.WrongIdException;
+import com.example.cp.exception.*;
 import com.example.cp.repository.CampaignRepository;
 import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -37,6 +35,8 @@ public class CampaignService {
             restTemplate.postForEntity("http://weather/propagate?campaignId="+campaign.getId(),null,String.class);
         }catch (MongoException e){
             throw new UnableToSaveCampaignException("Błąd przy zapisie kampanii");
+        }catch (RestClientException e){
+            throw new UnableToPropagateException("Błąd podczas propagacji danych");
         }
     }
 
@@ -66,6 +66,8 @@ public class CampaignService {
             restTemplate.delete("http://weather/propagate?campaignId="+campaignId);
         }catch (MongoException e){
             throw new UnableToDeleteCampaign("Błąd przy usunięciu kampanii");
+        }catch (RestClientException e){
+            throw new UnableToPropagateException("Błąd podczas propagacji danych");
         }
     }
 
