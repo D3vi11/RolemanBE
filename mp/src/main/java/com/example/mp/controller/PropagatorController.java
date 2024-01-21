@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("propagator")
+@RequestMapping("propagate")
 public class PropagatorController {
     private final PropagatorService propagatorService;
 

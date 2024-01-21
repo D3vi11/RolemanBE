@@ -1,10 +1,7 @@
 package com.example.cp.handler;
 
 import com.example.cp.ResponseObject;
-import com.example.cp.exception.CampaignNotFoundException;
-import com.example.cp.exception.UnableToDeleteCampaign;
-import com.example.cp.exception.UnableToSaveCampaignException;
-import com.example.cp.exception.WrongIdException;
+import com.example.cp.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,6 +33,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnableToDeleteCampaign.class)
     public ResponseEntity<ResponseObject> errorDeletingCampaign(UnableToDeleteCampaign e){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+    @ExceptionHandler(UnableToPropagateException.class)
+    public ResponseEntity<ResponseObject> errorPropagatingData(UnableToPropagateException e){
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
