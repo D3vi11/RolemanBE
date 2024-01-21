@@ -31,7 +31,7 @@ public class PropagatorController {
     public ResponseEntity<ResponseObject> deleteData(@RequestParam String campaignId){
         propagatorService.delete(campaignId);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(new ResponseObject(HttpStatus.OK));
     }
 }

@@ -12,11 +12,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
 public class CampaignService {
     private final CampaignRepository campaignRepository;
+    private final RestTemplate restTemplate;
 
     public ResponseEntity<CampaignDto> getCampaignByNameAndPlayerName(String campaignName, String playerName){
         Campaign campaign = campaignRepository.findByCampaignNameAndUsername(campaignName, playerName)
@@ -29,7 +31,10 @@ public class CampaignService {
 
     public void createCampaign(CampaignDto campaignDto){
         try {
-            campaignRepository.save(mapToCampaign(campaignDto));
+            Campaign campaign = campaignRepository.save(mapToCampaign(campaignDto));
+            restTemplate.postForEntity("http://calendar/propagate?campaignId="+campaign.getId(),null,String.class);
+            restTemplate.postForEntity("http://map/propagate?campaignId="+campaign.getId(),null,String.class);
+            restTemplate.postForEntity("http://weather/propagate?campaignId="+campaign.getId(),null,String.class);
         }catch (MongoException e){
             throw new UnableToSaveCampaignException("Błąd przy zapisie kampanii");
         }
@@ -56,6 +61,9 @@ public class CampaignService {
                 .orElseThrow(() -> new CampaignNotFoundException("Nie znaleziono kampanii"));
         try {
             campaignRepository.deleteById(campaignId);
+            restTemplate.delete("http://calendar/propagate?campaignId="+campaignId);
+            restTemplate.delete("http://map/propagate?campaignId="+campaignId);
+            restTemplate.delete("http://weather/propagate?campaignId="+campaignId);
         }catch (MongoException e){
             throw new UnableToDeleteCampaign("Błąd przy usunięciu kampanii");
         }
