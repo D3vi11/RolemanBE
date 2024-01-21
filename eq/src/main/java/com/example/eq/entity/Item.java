@@ -1,10 +1,10 @@
 package com.example.eq.entity;
 
 import jakarta.validation.constraints.Min;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 @Data
+@AllArgsConstructor
 public class Item {
     @NonNull
     private String name;

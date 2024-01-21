@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.*;
 public class EquipmentController {
     private final EquipmentService equipmentService;
 
+    @PutMapping("nextDay")
+    public ResponseEntity<ResponseObject> nextDay(@RequestParam String campaignId){
+        equipmentService.nextDay(campaignId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseObject(HttpStatus.OK));
+    }
+
     @GetMapping
     public ResponseEntity<EquipmentDto> getEquipment(@RequestParam String username, @RequestParam String campaignId, @RequestParam String characterName) {
         EquipmentDto equipmentDto = equipmentService.readEquipment(username, campaignId, characterName);
