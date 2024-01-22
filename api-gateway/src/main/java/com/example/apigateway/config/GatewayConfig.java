@@ -1,28 +1,33 @@
 package com.example.apigateway.config;
 
 import com.example.apigateway.filter.AuthorizationFilter;
-import org.json.JSONObject;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import com.example.apigateway.filter.CampaignAuthFilter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class GatewayConfig {
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder, AuthorizationFilter authorizationFilter) {
+    public RouteLocator customQueryRouteLocator(RouteLocatorBuilder builder, AuthorizationFilter authorizationFilter, CampaignAuthFilter campaignAuthFilter) {
         return builder.routes()
                 .route("character", r -> r.path("/character/**")
                         .filters(f->f.rewritePath("/character","/")
-                                .filter(authorizationFilter))
+                                .filter(authorizationFilter)
+                                .filter(campaignAuthFilter))
                         .uri("lb://character"))
                 .route("campaign", r -> r.path("/campaign/**")
+                        .and()
+                        .method(HttpMethod.POST,HttpMethod.GET)
                         .filters(f->f.rewritePath("/campaign","/")
                                 .filter(authorizationFilter))
+                        .uri("lb://campaign"))
+                .route("campaign", r -> r.path("/campaign/**")
+                        .filters(f->f.rewritePath("/campaign","/")
+                                .filter(authorizationFilter)
+                                .filter(campaignAuthFilter))
                         .uri("lb://campaign"))
                 .route("data", r -> r.path("/data/**")
                         .filters(f->f.rewritePath("/data","/")
@@ -30,7 +35,8 @@ public class GatewayConfig {
                         .uri("lb://data"))
                 .route("equipment", r -> r.path("/equipment/**")
                         .filters(f->f.rewritePath("/equipment","/")
-                                .filter(authorizationFilter))
+                                .filter(authorizationFilter)
+                                .filter(campaignAuthFilter))
                         .uri("lb://equipment"))
                 .route("generator", r -> r.path("/generator/**")
                         .filters(f->f.rewritePath("/generator","/")
@@ -38,11 +44,13 @@ public class GatewayConfig {
                         .uri("lb://generator"))
                 .route("map", r -> r.path("/map/**")
                         .filters(f->f.rewritePath("/map","/")
-                                .filter(authorizationFilter))
+                                .filter(authorizationFilter)
+                                .filter(campaignAuthFilter))
                         .uri("lb://map"))
                 .route("weather", r -> r.path("/weather/**")
                         .filters(f->f.rewritePath("/weather","/")
-                                .filter(authorizationFilter))
+                                .filter(authorizationFilter)
+                                .filter(campaignAuthFilter))
                         .uri("lb://weather"))
                 .route("authorization", r -> r.path("/authorization/**")
                         .filters(f->f.rewritePath("/authorization","/")
@@ -50,7 +58,8 @@ public class GatewayConfig {
                         .uri("lb://authorization"))
                 .route("calendar", r -> r.path("/calendar/**")
                         .filters(f->f.rewritePath("/calendar","/")
-                                .filter(authorizationFilter))
+                                .filter(authorizationFilter)
+                                .filter(campaignAuthFilter))
                         .uri("lb://calendar"))
                 .build();
     }
