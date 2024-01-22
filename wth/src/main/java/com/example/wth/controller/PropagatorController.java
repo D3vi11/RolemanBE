@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class PropagatorController {
     private final PropagatorService propagatorService;
     @PostMapping
-    public ResponseEntity<ResponseObject> createData(@RequestBody PropagatorDto propagatorDto){
-        propagatorService.create(propagatorDto.campaignId());
+    public ResponseEntity<ResponseObject> createData(@RequestParam String campaignId){
+        propagatorService.create(campaignId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseObject(HttpStatus.CREATED));

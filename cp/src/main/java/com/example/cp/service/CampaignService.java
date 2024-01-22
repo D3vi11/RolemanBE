@@ -2,6 +2,7 @@ package com.example.cp.service;
 
 import com.example.cp.dto.CampaignDto;
 import com.example.cp.entity.Campaign;
+import com.example.cp.enums.AccessEnum;
 import com.example.cp.exception.*;
 import com.example.cp.repository.CampaignRepository;
 import com.mongodb.MongoException;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -71,11 +74,31 @@ public class CampaignService {
         }
     }
 
-    private CampaignDto mapToDto(Campaign campaign){
+    public AccessEnum verify(String campaignId, String username){
+        boolean isEmpty = campaignRepository.findAllByUsername(username)
+                .stream()
+                .map(Campaign::getId)
+                .filter(id -> id.equals(campaignId))
+                .toList()
+                .isEmpty();
+        if(!isEmpty){
+            return AccessEnum.ALLOW;
+        }else{
+            return AccessEnum.DENY;
+        }
+    }
+    public List<CampaignDto> findAllByUsername(String username){
+        return campaignRepository.findAllByUsername(username)
+                .stream()
+                .map(CampaignService::mapToDto)
+                .toList();
+    }
+
+    private static CampaignDto mapToDto(Campaign campaign){
         return new CampaignDto(campaign.getId(),campaign.getCampaignName(),campaign.getGameMasterUsername(),campaign.getPlayersUsernames());
     }
 
-    private Campaign mapToCampaign(CampaignDto campaignDto){
+    private static Campaign mapToCampaign(CampaignDto campaignDto){
         return new Campaign(campaignDto.getCampaignName(),campaignDto.getGameMasterUsername(),campaignDto.getPlayersUsernames());
     }
 }

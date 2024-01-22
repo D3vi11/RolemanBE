@@ -1,29 +1,24 @@
 package com.example.apigateway.filter;
 
-import com.example.apigateway.exception.IncorrectTokenException;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-
 @Component
+@RequiredArgsConstructor
 public class AuthorizationFilter implements GatewayFilter, Ordered {
+
+    private final WebClient.Builder webClient;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        WebClient webClient = WebClient.create("http://authorization");
         if(!exchange.getRequest().getHeaders().containsKey("Authorization")){
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
@@ -33,8 +28,9 @@ public class AuthorizationFilter implements GatewayFilter, Ordered {
            return exchange.getResponse().setComplete();
         }
         return webClient
+                .build()
                 .get()
-                .uri("/validate")
+                .uri("http://authorization/validate")
                 .header("Authorization", exchange.getRequest().getHeaders().get("Authorization").get(0))
                 .retrieve()
                 .bodyToMono(String.class)

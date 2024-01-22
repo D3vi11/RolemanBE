@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class PropagatorController {
     private final PropagatorService propagatorService;
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<ResponseObject> create(@RequestParam String campaignId){
         propagatorService.create(campaignId);
         return ResponseEntity
