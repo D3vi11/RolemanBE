@@ -21,9 +21,6 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class AuthorizationFilter implements GatewayFilter, Ordered {
 
-//    @Value("${auth.url}")
-//    private String authUrl;
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         WebClient webClient = WebClient.create("http://authorization");
