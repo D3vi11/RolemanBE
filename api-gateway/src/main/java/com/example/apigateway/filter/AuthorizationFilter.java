@@ -3,6 +3,7 @@ package com.example.apigateway.filter;
 import com.example.apigateway.exception.IncorrectTokenException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.Ordered;
@@ -20,12 +21,9 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class AuthorizationFilter implements GatewayFilter, Ordered {
 
-    @Value("${auth.url}")
-    private String authUrl;
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        WebClient webClient = WebClient.create(authUrl);
+        WebClient webClient = WebClient.create("http://authorization");
         if(!exchange.getRequest().getHeaders().containsKey("Authorization")){
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
