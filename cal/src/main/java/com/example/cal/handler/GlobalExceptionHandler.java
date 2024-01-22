@@ -39,4 +39,10 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
     }
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ResponseObject> nullPointer(NullPointerException e){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
+    }
 }

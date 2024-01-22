@@ -36,4 +36,10 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ResponseObject(e.getMessage(), HttpStatus.BAD_REQUEST));
     }
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ResponseObject> nullPointer(NullPointerException e){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
+    }
 }

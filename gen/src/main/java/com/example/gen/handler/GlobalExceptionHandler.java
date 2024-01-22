@@ -1,5 +1,6 @@
 package com.example.gen.handler;
 
+import com.example.gen.ResponseObject;
 import com.example.gen.exception.EnemiesNotFoundException;
 import com.google.gson.JsonParseException;
 import org.json.JSONObject;
@@ -12,22 +13,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EnemiesNotFoundException.class)
-    public ResponseEntity<String> enemiesNotFound(EnemiesNotFoundException e){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", HttpStatus.NOT_FOUND);
-        jsonObject.put("error", e.getMessage());
+    public ResponseEntity<ResponseObject> enemiesNotFound(EnemiesNotFoundException e){
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(jsonObject.toString());
+                .body(new ResponseObject(e.getMessage(),HttpStatus.NOT_FOUND));
     }
 
     @ExceptionHandler(JsonParseException.class)
-    public ResponseEntity<String> jsonParse(JsonParseException e){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-        jsonObject.put("error", e.getMessage());
+    public ResponseEntity<ResponseObject> jsonParse(JsonParseException e){
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(jsonObject.toString());
+                .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ResponseObject> nullPointer(NullPointerException e){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseObject(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }
