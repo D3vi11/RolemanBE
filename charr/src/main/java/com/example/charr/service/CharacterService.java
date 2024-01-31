@@ -10,6 +10,8 @@ import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CharacterService {
@@ -60,6 +62,13 @@ public class CharacterService {
         }catch (MongoException e){
             throw new UnableToDeleteException("Błąd podczas usuwania");
         }
+    }
+
+    public List<String> getAllNames(String campaignId, String username){
+        return characterRepository.findAllByCampaignIdAndUsername(campaignId, username)
+                .stream()
+                .map(Character::getName)
+                .toList();
     }
 
     private Character mapToCharacter(CharacterDto characterDto) {

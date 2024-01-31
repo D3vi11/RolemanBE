@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("")
 @RequiredArgsConstructor
@@ -35,10 +37,19 @@ public class CharacterController {
                 .status(HttpStatus.OK)
                 .body(new ResponseObject(HttpStatus.OK));
     }
-    @DeleteMapping ResponseEntity<ResponseObject> deleteCharacter(@RequestParam String characterName, @RequestParam String campaignId, @RequestParam String username){
+    @DeleteMapping
+    ResponseEntity<ResponseObject> deleteCharacter(@RequestParam String characterName, @RequestParam String campaignId, @RequestParam String username){
         characterService.deleteCharacter(characterName,campaignId,username);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseObject(HttpStatus.OK));
+    }
+
+    @GetMapping
+    ResponseEntity<List<String>> getAllNames(@RequestParam String campaignId, @RequestParam String username){
+        List<String> listOfNames = characterService.getAllNames(campaignId, username);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(listOfNames);
     }
 }
