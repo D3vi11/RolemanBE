@@ -6,7 +6,7 @@ public enum ClassEnum {
     WARLOCK,
     DRUID,
     CLERIC,
-    ROUGE,
+    ROGUE,
     RANGER,
     WIZARD,
     MONK,
