@@ -30,7 +30,7 @@ public class UserService {
                     throw new IncorrectRegistrationException("Użytkownik z tym loginem istnieje");
                 });
 
-        userRepository.findByUsername(registerDto.getEmail())
+        userRepository.findByEmail(registerDto.getEmail())
                 .ifPresent(u -> {
                     throw new IncorrectRegistrationException("Użytkownik z tym emailem istnieje");
                 });
@@ -52,10 +52,7 @@ public class UserService {
     }
 
     public String loginUser(LoginDto loginDto) {
-        User user = userRepository.findByUsername(loginDto.getUsername())
-                .filter(u -> passwordEncoder.matches(loginDto.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new IncorrectLoginException("Niepoprawny login lub hasło"));
-
+        User user = findUser(loginDto);
         if (!user.getIsActive()) {
             throw new IncorrectLoginException("Użytkownik nie jest aktywny");
         }
@@ -63,19 +60,13 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDto changePasswordDto) {
-        User user = userRepository.findByUsername(changePasswordDto.getUsername())
-                .filter(u -> passwordEncoder.matches(changePasswordDto.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new IncorrectLoginException("Niepoprawny login lub hasło"));
-
+        User user = findUser(changePasswordDto);
         user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
         userRepository.save(user);
     }
 
     public void changeUsername(ChangeUsernameDto changeUsernameDto){
-        User user = userRepository.findByUsername(changeUsernameDto.getUsername())
-                .filter(u -> passwordEncoder.matches(changeUsernameDto.getPassword(), u.getPassword()))
-                .orElseThrow(()-> new IncorrectLoginException("Niepoprawny login lub hasło"));
-
+        User user = findUser(changeUsernameDto);
         userRepository.findByUsername(changeUsernameDto.getNewUsername()).ifPresent(user1 -> {
             throw new UserExistsException("Użytkownik z podanym loginem już istnieje");
         });
@@ -85,10 +76,7 @@ public class UserService {
     }
 
     public void changeEmail(ChangeEmailDto changeEmailDto) {
-        User user = userRepository.findByUsername(changeEmailDto.getUsername())
-                .filter(u -> passwordEncoder.matches(changeEmailDto.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new IncorrectLoginException("Niepoprawny login lub hasło"));
-
+        User user = findUser(changeEmailDto);
         userRepository.findByEmail(changeEmailDto.getNewEmail()).ifPresent(user1 -> {
             throw new UserExistsException("Użytkownik z podanym emailem już istnieje");
         });
@@ -98,10 +86,7 @@ public class UserService {
     }
 
     public void deleteUser(LoginDto loginDto){
-        User user = userRepository.findByUsername(loginDto.getUsername())
-                .filter(u -> passwordEncoder.matches(loginDto.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new UserExistsException("Niepoprawne dane użytkownika lub użytkownik nie istnieje"));
-
+        User user = findUser(loginDto);
         userRepository.delete(user);
     }
 
@@ -112,5 +97,11 @@ public class UserService {
 
     private String generateToken() {
         return UUID.randomUUID().toString();
+    }
+
+    private User findUser(BasicDto basicDto){
+        return userRepository.findByUsername(basicDto.getUsername())
+                .filter(u -> passwordEncoder.matches(basicDto.getPassword(), u.getPassword()))
+                .orElseThrow(() -> new IncorrectLoginException("Niepoprawne dane użytkownika lub użytkownik nie istnieje"));
     }
 }

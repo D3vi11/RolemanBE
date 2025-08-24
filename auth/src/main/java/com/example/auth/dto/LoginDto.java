@@ -6,7 +6,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class LoginDto {
+public class LoginDto implements BasicDto{
     @NotBlank
     private String username;
     @NotBlank

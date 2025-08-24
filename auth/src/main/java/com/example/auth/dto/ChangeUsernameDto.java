@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ChangeUsernameDto {
+public class ChangeUsernameDto implements BasicDto{
     @NotBlank(message = "Nazwa użytkownika nie może być pusta")
     @Size(min = 5, message = "Nazwa użytkownika musi mieć co najmniej 5 znaków")
     private String username;

@@ -2,12 +2,10 @@ package com.example.auth.service;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 @Service
@@ -26,7 +24,7 @@ public class JwtService {
     }
 
     public boolean validateToken(String token){
-        token = token.split(" ")[1];
+        token = new AuthToken(token).token();
         try {
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
             return true;
@@ -35,4 +33,15 @@ public class JwtService {
         }
 
     }
+        public record AuthToken(String token) {
+            private static final String header = "Bearer ";
+
+        public AuthToken(String token) {
+                if (token.contains(header)) {
+                    this.token = token;
+                } else {
+                    this.token = token.replace(header, "");
+                }
+            }
+        }
 }

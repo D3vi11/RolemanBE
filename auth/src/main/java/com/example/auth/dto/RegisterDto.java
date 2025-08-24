@@ -8,7 +8,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class RegisterDto {
+public class RegisterDto implements BasicDto{
 
     @NotBlank(message = "Nazwa użytkownika nie może być pusta")
     @Size(min = 5, message = "Nazwa użytkownika musi mieć co najmniej 5 znaków")
