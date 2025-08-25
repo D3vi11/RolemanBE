@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PutExchange;
 
 import java.util.List;
 
@@ -28,7 +27,10 @@ public class CampaignController {
 
     @GetMapping
     public ResponseEntity<CampaignDto> getCampaign(@RequestParam String campaignName, @RequestParam String username) {
-        return campaignService.getCampaignByNameAndPlayerName(campaignName, username);
+        CampaignDto campaign = campaignService.getCampaign(campaignName, username);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(campaign);
     }
 
     @PostMapping

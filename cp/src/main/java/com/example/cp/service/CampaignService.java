@@ -7,8 +7,6 @@ import com.example.cp.exception.*;
 import com.example.cp.repository.CampaignRepository;
 import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -21,13 +19,11 @@ public class CampaignService {
     private final CampaignRepository campaignRepository;
     private final RestTemplate restTemplate;
 
-    public ResponseEntity<CampaignDto> getCampaignByNameAndPlayerName(String campaignName, String playerName){
+    public CampaignDto getCampaign(String campaignName, String playerName){
         Campaign campaign = campaignRepository.findByCampaignNameAndUsername(campaignName, playerName)
                 .orElseThrow(()-> new CampaignNotFoundException("Nie znaleziono kampanii"));
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(mapToDto(campaign));
+        return mapToDto(campaign);
     }
 
     public void createCampaign(CampaignDto campaignDto){
