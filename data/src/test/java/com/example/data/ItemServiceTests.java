@@ -129,7 +129,6 @@ public class ItemServiceTests {
 
     @Nested
     public class DeleteTests{
-        ItemDto itemDto = new ItemDto(name, requirements, description);
         Item item = new Item(name, requirements, description);
 
         @Test
