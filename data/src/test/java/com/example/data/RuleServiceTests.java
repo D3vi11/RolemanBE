@@ -127,7 +127,6 @@ public class RuleServiceTests {
 
     @Nested
     public class DeleteTests{
-        RuleDto ruleDto = new RuleDto(name, description);
         Rule rule = new Rule(name, description);
 
         @Test
