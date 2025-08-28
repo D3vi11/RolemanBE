@@ -7,7 +7,6 @@ import com.example.data.exception.FailedToSaveException;
 import com.example.data.exception.NothingFoundException;
 import com.example.data.repository.RuleRepository;
 import com.mongodb.MongoException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -65,8 +64,9 @@ public class RuleService {
     private Rule mapToRule(RuleDto ruleDto) {
         return new Rule(ruleDto.getName(), ruleDto.getDescription());
     }
-    private RuleDto mapToDto(Rule rule){
-        return new RuleDto(rule.getName(),rule.getDescription());
+
+    private RuleDto mapToDto(Rule rule) {
+        return new RuleDto(rule.getName(), rule.getDescription());
     }
 
     private List<Rule> mapAll(List<RuleDto> list) {
