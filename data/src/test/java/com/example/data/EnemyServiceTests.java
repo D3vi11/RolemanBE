@@ -3,7 +3,6 @@ package com.example.data;
 import com.example.data.dto.EnemyDto;
 import com.example.data.entity.Enemy;
 import com.example.data.enums.Rarity;
-import com.example.data.exception.FailedToDeleteException;
 import com.example.data.exception.FailedToSaveException;
 import com.example.data.exception.NothingFoundException;
 import com.example.data.repository.EnemyRepository;
@@ -17,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +32,7 @@ class EnemyServiceTests {
     int cr = 1;
     int xp = 1;
     String description = "description";
-    CharacterSheet characterSheet = new CharacterSheet(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    CharacterSheet characterSheet = new CharacterSheet(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, "1");
 
     @Mock
     EnemyRepository enemyRepository;
@@ -65,31 +63,31 @@ class EnemyServiceTests {
     }
 
     @Nested
-    public class FindByNameTests{
+    public class FindByNameTests {
         EnemyDto enemyDto = new EnemyDto(name, image, rarity, cr, xp, description, characterSheet);
         Enemy enemy = new Enemy(name, image, rarity, cr, xp, description, characterSheet);
 
         @Test
-        public void findByNameTest(){
+        public void findByNameTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.of(enemy));
             EnemyDto dto = enemyService.findByName(name);
             assertEquals(enemyDto, dto);
         }
 
         @Test
-        public void nothingFoundTest(){
+        public void nothingFoundTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.empty());
             assertThrows(NothingFoundException.class, () -> enemyService.findByName(name));
         }
     }
 
     @Nested
-    public class FindAllByRarityAndCrTests{
+    public class FindAllByRarityAndCrTests {
         EnemyDto enemyDto = new EnemyDto(name, image, rarity, cr, xp, description, characterSheet);
         Enemy enemy = new Enemy(name, image, rarity, cr, xp, description, characterSheet);
 
         @Test
-        public void findAllByRarityAndCrTest(){
+        public void findAllByRarityAndCrTest() {
             List<EnemyDto> testList = List.of(enemyDto, enemyDto, enemyDto);
             when(enemyRepository.findAllByRarityAndCr(rarity, cr)).thenReturn(List.of(enemy, enemy, enemy, enemy));
             List<EnemyDto> list = enemyService.findAllByRarityAndCr(rarity, cr, 3);
@@ -101,12 +99,12 @@ class EnemyServiceTests {
     }
 
     @Nested
-    public class SaveTests{
+    public class SaveTests {
         EnemyDto enemyDto = new EnemyDto(name, image, rarity, cr, xp, description, characterSheet);
         Enemy enemy = new Enemy(name, image, rarity, cr, xp, description, characterSheet);
 
         @Test
-        public void saveTest(){
+        public void saveTest() {
             enemyService.save(enemyDto);
             ArgumentCaptor<Enemy> enemyCaptor = ArgumentCaptor.forClass(Enemy.class);
             verify(enemyRepository).save(enemyCaptor.capture());
@@ -114,19 +112,19 @@ class EnemyServiceTests {
         }
 
         @Test
-        public void failedToSaveTest(){
+        public void failedToSaveTest() {
             when(enemyRepository.save(enemy)).thenThrow(new MongoException(""));
-            assertThrows(FailedToSaveException.class,() -> enemyService.save(enemyDto));
+            assertThrows(FailedToSaveException.class, () -> enemyService.save(enemyDto));
         }
     }
 
     @Nested
-    public class ChangeTests{
+    public class ChangeTests {
         EnemyDto enemyDto = new EnemyDto(name, image, rarity, cr, xp, description, characterSheet);
         Enemy enemy = new Enemy(name, image, rarity, cr, xp, description, characterSheet);
 
         @Test
-        public void changeTest(){
+        public void changeTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.of(enemy));
             enemyService.change(name, enemyDto);
             ArgumentCaptor<Enemy> enemyCaptor = ArgumentCaptor.forClass(Enemy.class);
@@ -135,37 +133,36 @@ class EnemyServiceTests {
         }
 
         @Test
-        public void enemyNotFoundTest(){
+        public void enemyNotFoundTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.empty());
-            assertThrows(NothingFoundException.class,() -> enemyService.change(name, enemyDto));
+            assertThrows(NothingFoundException.class, () -> enemyService.change(name, enemyDto));
             ArgumentCaptor<Enemy> enemyCaptor = ArgumentCaptor.forClass(Enemy.class);
             verify(enemyRepository, never()).save(enemyCaptor.capture());
         }
 
         @Test
-        public void failedToSaveTest(){
+        public void failedToSaveTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.of(enemy));
             when(enemyRepository.save(enemy)).thenThrow(new MongoException(""));
-            assertThrows(FailedToSaveException.class,() -> enemyService.change(name, enemyDto));
+            assertThrows(FailedToSaveException.class, () -> enemyService.change(name, enemyDto));
         }
     }
 
     @Nested
-    public class DeleteTests{
-        EnemyDto enemyDto = new EnemyDto(name, image, rarity, cr, xp, description, characterSheet);
+    public class DeleteTests {
         Enemy enemy = new Enemy(name, image, rarity, cr, xp, description, characterSheet);
 
         @Test
-        public void deleteTest(){
+        public void deleteTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.of(enemy));
             enemyService.delete(name);
             verify(enemyRepository).delete(enemy);
         }
 
         @Test
-        public void enemyNotFoundTest(){
+        public void enemyNotFoundTest() {
             when(enemyRepository.findByName(name)).thenReturn(Optional.empty());
-            assertThrows(NothingFoundException.class,() -> enemyService.delete(name));
+            assertThrows(NothingFoundException.class, () -> enemyService.delete(name));
             verify(enemyRepository, never()).delete(enemy);
         }
     }

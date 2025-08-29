@@ -26,6 +26,6 @@ public class CharacterSheet {
     @NonNull
     private Integer hp;
     @NonNull
-    private Integer damage;
+    private String damage;
 
 }
