@@ -1,11 +1,9 @@
 package com.example.wth.service;
 
-import com.example.wth.dto.WeatherDto;
+import com.example.wth.dto.PreferenceDto;
 import com.example.wth.dto.WeatherSetDto;
-import com.example.wth.entity.Preference;
 import com.example.wth.entity.Weather;
 import com.example.wth.exception.*;
-import com.example.wth.repository.PreferenceRepository;
 import com.example.wth.repository.WeatherRepository;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -26,12 +24,11 @@ public class WeatherService {
     @Value("${weather.api.key}")
     private String key;
     private final WeatherRepository weatherRepository;
-    private final PreferenceRepository preferenceRepository;
+    private final PreferenceService preferenceService;
     private final RestTemplate restTemplate;
 
     public String getWeather(String campaignId){
-        Preference preference = preferenceRepository.findByCampaignId(campaignId)
-                .orElseThrow(() -> new PreferenceNotFoundException("Nie znaleziono preferencji dla tej kampanii"));
+        PreferenceDto preference = preferenceService.readPreference(campaignId);
 
         if(preference.getIsExternal()){
             return getExternalWeather();
@@ -84,12 +81,19 @@ public class WeatherService {
         ResponseEntity<String> entity = restTemplate.getForEntity("http://api.weatherstack.com/current?access_key="+key+"&query=Wroclaw", String.class);
 
         String body = entity.getBody();
-        JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
-        return jsonObject
-                .get("current")
-                .getAsJsonObject()
-                .get("weather_descriptions")
-                .getAsString();
+        if(body == null){
+            throw new WeatherNotFoundException("Nie znaleziono pogody");
+        }
+        try{
+            JsonObject jsonObject = JsonParser.parseString(body).getAsJsonObject();
+            return jsonObject
+                    .get("current")
+                    .getAsJsonObject()
+                    .get("weather_descriptions")
+                    .getAsString();
+        }catch (NullPointerException e){
+            throw new WeatherNotFoundException("Błąd przy parsowaniu - zła struktura zwróconego Jsona");
+        }
     }
 
     private Weather mapToWeather(WeatherSetDto weatherSetDto){
